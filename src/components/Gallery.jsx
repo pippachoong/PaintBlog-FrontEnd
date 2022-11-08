@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 import { useState, useEffect } from 'react';
+import moment from 'moment';
 
 let BASE_URL = 'http://localhost:3000';
 
@@ -45,7 +46,7 @@ function Gallery() {
                                     {blog.title} 
                                 </h3>
                                 <h4>
-                                    {blog.author}
+                                    {blog.author} - {moment(blog.createdAt).format('Do MMMM YYYY,h:mm:ss a')}
                                 </h4>
                                 <p>
                                     {blog.content}
