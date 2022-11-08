@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 import { useState, useEffect } from 'react';
+import moment from 'moment';
 
 let BASE_URL = 'http://localhost:3000';
 
@@ -23,6 +24,7 @@ function Gallery() {
             )
             .catch(err => {
                 console.warn(`Error`, err);
+                setLoading(false);
             })
     }, [])
 
@@ -40,9 +42,16 @@ function Gallery() {
                         {
                         blogPosts.map((blog) =>
                             <div key={blog._id}>
+                                <h3>
+                                    {blog.title} 
+                                </h3>
+                                <h4>
+                                    {blog.author} - {moment(blog.createdAt).format('Do MMMM YYYY,h:mm:ss a')}
+                                </h4>
                                 <p>
                                     {blog.content}
                                 </p>
+                                <img src={blog.img}/>
                             </div>
                         )}
                         </div>
