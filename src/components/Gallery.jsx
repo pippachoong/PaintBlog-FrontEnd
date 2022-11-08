@@ -23,6 +23,7 @@ function Gallery() {
             )
             .catch(err => {
                 console.warn(`Error`, err);
+                setLoading(false);
             })
     }, [])
 
@@ -40,9 +41,16 @@ function Gallery() {
                         {
                         blogPosts.map((blog) =>
                             <div key={blog._id}>
+                                <h3>
+                                    {blog.title} 
+                                </h3>
+                                <h4>
+                                    {blog.author}
+                                </h4>
                                 <p>
                                     {blog.content}
                                 </p>
+                                <img src={blog.img}/>
                             </div>
                         )}
                         </div>
