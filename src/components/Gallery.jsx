@@ -2,13 +2,15 @@ import React from "react";
 import axios from "axios";
 import { useState, useEffect } from 'react';
 import moment from 'moment';
+import { useNavigate } from "react-router-dom";
 
 let BASE_URL = 'http://localhost:3000';
 
-function Gallery() {
+export default function Gallery() {
 
     const [blogPosts, setBlogPosts] = useState([]);
     const [loading, setLoading] = useState(false);
+    const navigatePush = useNavigate();
 
     // TODO: import the data from the backend
     // e.g. http://localhost:3000/blogs
@@ -30,6 +32,10 @@ function Gallery() {
 
     console.log(`blogPosts is`, blogPosts);
 
+    function handleShowBlog(id, e) {
+        navigatePush(`/blogpost/${id}`);
+    }
+
     return (
         <div>
             {
@@ -41,6 +47,8 @@ function Gallery() {
                         <div>
                         {
                         blogPosts.map((blog) =>
+                           
+                          <div onClick={(e) => handleShowBlog(blog._id, e)}>
                             <div key={blog._id}>
                                 <h3>
                                     {blog.title} 
@@ -53,6 +61,7 @@ function Gallery() {
                                 </p>
                                 <img src={blog.img}/>
                             </div>
+                          </div>
                         )}
                         </div>
                     )
@@ -61,4 +70,4 @@ function Gallery() {
     );
 }
 
-export default Gallery;
+// export default Gallery;

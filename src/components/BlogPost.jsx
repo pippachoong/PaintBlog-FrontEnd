@@ -2,7 +2,7 @@ import react from 'react';
 import {useState, useEffect} from 'react';
 
 
-function BlogPost (){
+export default function BlogPost (){
 
 
 
@@ -20,4 +20,4 @@ function BlogPost (){
 
 }
 
-export default BlogPost;
+// export default BlogPost;
