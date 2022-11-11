@@ -2,6 +2,7 @@ import react from 'react';
 import {useState, useEffect} from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
 import axios from 'axios';
+import moment from 'moment';
 
 let BASE_URL = 'http://localhost:3000';
 
@@ -38,7 +39,16 @@ export default function BlogPost (props){
                 ?
                 (<div> Loading Blog ... </div>)
                 :
-                (<div>{blogPost._id}</div>)
+                (
+                <>  
+                <h2>{blogPost.title}</h2>
+                
+                <h3> {blogPost.author} - {moment(blogPost.createdAt).format('Do MMMM YYYY,h:mm:ss a')} </h3>
+                <img src={blogPost.img} alt="" />
+                <p>{blogPost.content}</p>
+                
+                </>  
+                ) 
             }
         </div>
 
