@@ -6,6 +6,24 @@ import moment from 'moment';
 
 let BASE_URL = 'http://localhost:3000';
 
+// function ShowBlog(blog){
+    
+//     return (
+//         <div>
+//             <h2>{blog.title}</h2>
+                
+//                 <h3> {blog.author} - {moment(blog.createdAt).format('Do MMMM YYYY,h:mm:ss a')} </h3>
+//                 <img src={blog.img} alt="" />
+//                 <p>{blog.content}</p>
+//                 <div>
+
+//                 </div>
+//         </div>
+//     )
+
+// }
+
+
 export default function BlogPost (props){
 
     const {id} = useParams();
@@ -21,7 +39,8 @@ export default function BlogPost (props){
                 res => {
                     setBlogPost(res.data);
                     setLoading(false);
-                }
+                },
+                
             )
             .catch(err => {
                 console.warn(`Error`, err);
@@ -29,7 +48,8 @@ export default function BlogPost (props){
             })
     }, [])
 
-    console.log(`blogPost is: `, blogPost);
+    // console.log(`blogPost is: `, blogPost);
+    // console.log('blogPost comment',blogPost.comment)
 
     return(
 
@@ -46,6 +66,31 @@ export default function BlogPost (props){
                 <h3> {blogPost.author} - {moment(blogPost.createdAt).format('Do MMMM YYYY,h:mm:ss a')} </h3>
                 <img src={blogPost.img} alt="" />
                 <p>{blogPost.content}</p>
+                <div>
+                {   
+                    // console.log('blogpost', blogPost)
+                    // console.log('blogpost', blogPost.comment)
+                    blogPost.comment === undefined
+                    ? 
+                    (
+                        <div></div>
+                    )
+                    :
+                    (
+                        <div>
+                            {
+                                // blogPost.comment.map(comment => {
+                                //     <div>{comment.text}</div>
+                                // })
+                                blogPost.comment[0].text
+                            }
+                        </div>
+                    )
+
+                }
+
+                </div>
+                {/* <ShowBlog prop={blogPost} /> */}
                 
                 </>  
                 ) 
