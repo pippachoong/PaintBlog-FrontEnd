@@ -10,7 +10,7 @@ export default function BlogPost (props){
     const {id} = useParams();
 
     const [loading, setLoading] = useState(false);
-    const [blogPost, setBlogPost] = useState([]);
+    const [blogPost, setBlogPost] = useState({});
     const [error, setError] = useState(null);
 
     useEffect(() => {
@@ -38,7 +38,7 @@ export default function BlogPost (props){
                 ?
                 (<div> Loading Blog ... </div>)
                 :
-                (<div>{blogPost[0]._id}</div>)
+                (<div>{blogPost._id}</div>)
             }
         </div>
 
