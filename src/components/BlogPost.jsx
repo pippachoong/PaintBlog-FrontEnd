@@ -79,10 +79,9 @@ export default function BlogPost (props){
                     (
                         <div>
                             {
-                                // blogPost.comment.map(comment => {
-                                //     <div>{comment.text}</div>
-                                // })
-                                blogPost.comment[0].text
+                                blogPost.comment.map(comment => (
+                                    <div>{comment.text}</div>
+                                ))
                             }
                         </div>
                     )
