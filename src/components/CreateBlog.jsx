@@ -6,9 +6,21 @@ const BASE_URL = 'http://localhost:3000';
 
 export default function CreateBlog(props) {
 
+    const [title, setTitle] = useState('');
+    const [author, setAuthor] = useState('');
+    const [img, setImg] = useState('');
+    const [content, setContent] = useState('');
+
+    const navigatePush = useNavigate();
+
     const handleInput = (ev) => {
         console.log('input changing', ev.target.title);
     }
+
+    const handleSubmit = () => {
+        console.log('form submitted');
+    }
+
 
     return (
 
