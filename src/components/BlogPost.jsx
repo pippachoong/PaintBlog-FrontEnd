@@ -78,11 +78,14 @@ export default function BlogPost (props){
                     :
                     (
                         <div>
+                            <h3>Comments ({blogPost.comment.length})</h3>
+                            <ul>
                             {
                                 blogPost.comment.map(comment => (
-                                    <div>{comment.text}</div>
+                                    <li>{comment.text}</li>
                                 ))
                             }
+                            </ul>
                         </div>
                     )
 

@@ -33,7 +33,7 @@ export default function Gallery() {
     console.log(`blogPosts is`, blogPosts);
 
     function handleShowBlog(id, e) {
-        navigatePush(`/blogpost/${id}`);
+        navigatePush(`/blogs/${id}`);
     }
 
     return (

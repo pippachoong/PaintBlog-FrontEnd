@@ -13,7 +13,7 @@ function App() {
       <Router>
         <Routes>
             <Route path="/" element={<Gallery/>}/>
-            <Route path="/blogpost/:id" element={<BlogPost/>}/>
+            <Route path="/blogs/:id" element={<BlogPost/>}/>
 
 
           </Routes>
