@@ -6,24 +6,6 @@ import moment from 'moment';
 
 let BASE_URL = 'http://localhost:3000';
 
-// function ShowBlog(blog){
-    
-//     return (
-//         <div>
-//             <h2>{blog.title}</h2>
-                
-//                 <h3> {blog.author} - {moment(blog.createdAt).format('Do MMMM YYYY,h:mm:ss a')} </h3>
-//                 <img src={blog.img} alt="" />
-//                 <p>{blog.content}</p>
-//                 <div>
-
-//                 </div>
-//         </div>
-//     )
-
-// }
-
-
 export default function BlogPost (props){
 
     const {id} = useParams();
@@ -92,8 +74,6 @@ export default function BlogPost (props){
                 }
 
                 </div>
-                {/* <ShowBlog prop={blogPost} /> */}
-                
                 </>  
                 ) 
             }
