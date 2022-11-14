@@ -20,10 +20,10 @@ export default function CreateBlog(props) {
         ev.preventDefault()
         
         axios.post(`${BASE_URL}/blogs`, {
-                title: title,
-                author: author,
-                img: img,
-            content: content
+            "title": title,
+            "author": author,
+            "img": img,
+            "content": content
         })
         .then(res => {
             console.log(`we've made it to then`)
