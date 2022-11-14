@@ -1,6 +1,7 @@
 import axios from 'axios';
 import react, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { redirect } from 'react-router-dom';
 
 const BASE_URL = 'http://localhost:3000';
 
@@ -13,14 +14,65 @@ export default function CreateBlog(props) {
 
     const navigatePush = useNavigate();
 
-    const handleInput = (ev) => {
-        console.log('input changing', ev.target.title);
-    }
-
-    const handleSubmit = () => {
+    
+    const handleSubmit = (ev) => {
         console.log('form submitted');
+        ev.preventDefault()
+        
+        axios.post(`${BASE_URL}/blogs`, {
+                title: title,
+                author: author,
+                img: img,
+            content: content
+        })
+        .then(res => {
+            console.log(`we've made it to then`)
+            console.log('response', res)
+            navigatePush('/')
+        })
+        .catch(err => {
+            console.error(`error submitting data:`, err)
+        })
+        // ev.preventDefault()
+        // try {
+        
+        // await axios.post(`${BASE_URL}/blogs`, {
+        //     title: title,
+        //     author: author,
+        //     img: img,
+        //     content: content,
+        // })
+
+        // navigatePush(`/`)
+
+        // }catch(err){
+        //     console.error(`error submitting data:`, err)
+        // }
+        
     }
 
+    const handleInput = (ev) => {
+        // console.log(ev.target)
+        // console.log('input changing', ev.target.value);
+        // console.log('title changing', ev.target.name);
+        switch (ev.target.name){
+            case 'title':
+                setTitle(ev.target.value)
+                break
+            case 'author':
+                setAuthor(ev.target.value)
+                break
+            case 'image':
+                setImg(ev.target.value)
+                break
+            case 'content':
+                setContent(ev.target.value)
+                break
+            default:
+                console.log('Please try again')
+        }
+
+    }
 
     return (
 
