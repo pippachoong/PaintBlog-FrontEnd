@@ -1,7 +1,7 @@
 import axios from 'axios';
-import react, { useState } from 'react';
+import  { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { redirect } from 'react-router-dom';
+
 
 const BASE_URL = 'http://localhost:3000';
 
@@ -33,28 +33,10 @@ export default function CreateBlog(props) {
         .catch(err => {
             console.error(`error submitting data:`, err)
         })
-        // ev.preventDefault()
-        // try {
-        
-        // await axios.post(`${BASE_URL}/blogs`, {
-        //     title: title,
-        //     author: author,
-        //     img: img,
-        //     content: content,
-        // })
-
-        // navigatePush(`/`)
-
-        // }catch(err){
-        //     console.error(`error submitting data:`, err)
-        // }
         
     }
 
     const handleInput = (ev) => {
-        // console.log(ev.target)
-        // console.log('input changing', ev.target.value);
-        // console.log('title changing', ev.target.name);
         switch (ev.target.name){
             case 'title':
                 setTitle(ev.target.value)
@@ -82,35 +64,47 @@ export default function CreateBlog(props) {
             <form className="postblogform" onSubmit={handleSubmit} >
 
                 <div>
-                <input className="postbloginput" onChange={handleInput}
-                name="title"
-                type="text"
-                required
-                placeholder='give your PaintBlog post a title'
-                />
+                    <label>
+                        Title
+                        <input className="postbloginput" onChange={handleInput}
+                        name="title"
+                        type="text"
+                        required
+                        placeholder='PaintBlog title'
+                        />
+                    </label>
                 </div>
                 <div>
-                <input className="postbloginput" onChange={handleInput}
-                name="author"
-                type="text"
-                required
-                placeholder='Author'
-                />
+                    <label>
+                        Author
+                        <input className="postbloginput" onChange={handleInput}
+                        name="author"
+                        type="text"
+                        required
+                        placeholder='Author'
+                        />
+                    </label>
                 </div>
                 <div>
-                <input className="postbloginput" onChange={handleInput}
-                name="image"
-                type="text"
-                required
-                placeholder='Image URL'
-                />
+                    <label>
+                        Image
+                        <input className="postbloginput" onChange={handleInput}
+                        name="image"
+                        type="text"
+                        required
+                        placeholder='Image URL'
+                        />
+                    </label>
                 </div>
                 <div>
-                <input className="postbloginput" onChange={handleInput}
-                name="content"
-                type="text"
-                placeholder='Your blog goes here'
-                />
+                    <label>
+                        Blog
+                        <input className="postbloginput" onChange={handleInput}
+                        name="content"
+                        type="text"
+                        placeholder='Your blog goes here'
+                        />
+                    </label>
                 </div>
                 <div className="postblogbutton">
                 <button>Save blog</button>
