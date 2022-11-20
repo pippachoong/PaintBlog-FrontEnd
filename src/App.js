@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Link, Route, Routes } from "react-router-dom";
 import BlogPost from './components/BlogPost';
 import CreateBlog from './components/CreateBlog';
 import Login from './components/Login';
+import SignUp from './components/SignUp';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
@@ -21,23 +22,23 @@ function App() {
   useEffect(() => {
     fetchUser();
   }, []);
-  
-  function fetchUser(){
+
+  function fetchUser() {
     let token = localStorage.getItem('jwt');
 
-    if(token){
+    if (token) {
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
       axios.get(`${BASE_URL}/current_user`)
-      .then(res => {
-        setCurrentUser(res.data)
-      })
-      .catch(err => {
-        console.warn(err);
-      })
+        .then(res => {
+          setCurrentUser(res.data)
+        })
+        .catch(err => {
+          console.warn(err);
+        })
     }
   }
 
-  function handleLogout(){
+  function handleLogout() {
     setCurrentUser(null);
     localStorage.removeItem('jwt');
     axios.defaults.headers.common['Authorization'] = undefined;
@@ -47,19 +48,35 @@ function App() {
     <div className="App">
       <h1> Welcome to Paint Blog! The best blog ever! </h1>
       {/* <Router> */}
-      <nav>
-        <Link to='/'>Home</Link>
-        <Link to='/create'>New Blog</Link>
-        <Link to='/login'>Login</Link>
-        <Link onClick={handleLogout} to='/'>Logout</Link>
-      </nav>
+      <div>
+        <nav>
+          <Link to='/'>Home</Link>
+          {
+            currentUser !== null
+              ?
+              (
+                <>
+                  <Link to='/create'>New Blog</Link>
+                  <Link onClick={handleLogout} to='/'>Logout</Link>
+                </>
+              )
+              :
+              (
+                <>
+                  <Link to='/login'>Login</Link>
+                  <Link to='/signup'>Sign up</Link>
+                </>
+              )
+          }
+        </nav>
+      </div>
+
       <Routes>
         <Route path="/" element={<Gallery />} />
         <Route path="/blogs/:id" element={<BlogPost />} />
         <Route path="/create" element={<CreateBlog />} />
         <Route path="/login" element={<Login fetchUser={fetchUser} user={currentUser} {...useState} />} />
-
-
+        <Route path="/signup" element={<SignUp fetchUser={fetchUser} {...useState} />} />
       </Routes>
       {/* </Router> */}
       .

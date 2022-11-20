@@ -35,6 +35,7 @@ export default function Login(props) {
             result => {
                 localStorage.setItem('jwt', result.data.token)
                 props.fetchUser();
+                navigatePush('/');
             }
         )
         .catch(err => {
