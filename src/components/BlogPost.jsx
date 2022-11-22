@@ -33,6 +33,8 @@ export default function BlogPost (props){
     // console.log(`blogPost is: `, blogPost);
     // console.log('blogPost comment',blogPost.comment)
 
+    console.log('blogPost 1', blogPost);
+
     return(
 
         <div>
@@ -43,12 +45,27 @@ export default function BlogPost (props){
                 :
                 (
                 <>  
-                <h2>{blogPost.title}</h2>
+
+                {
+                    // blogPost.map((r) => 
+                    // <div>
+                    // <p>{r.title}</p>
+                    // {/* <p>{r.author.name}</p> */}
+                    // <img src={r.img}></img>
+                    // <p>{r.content}</p>
+                    // </div>
+                    // )
+                }
+                {/* <h2>{blogPost.title}</h2> */}
                 
-                <h3> {blogPost.author} - {moment(blogPost.createdAt).format('Do MMMM YYYY,h:mm:ss a')} </h3>
-                <img src={blogPost.img} alt="" />
-                <p>{blogPost.content}</p>
-                <div>
+                {/* <h3> */}
+                    {/* {blogPost.author.map((r) => 
+                    <div>{r.name}</div>
+                    )} -  */}
+                    {/* {moment(blogPost.createdAt).format('Do MMMM YYYY,h:mm:ss a')} </h3> */}
+                {/* <img src={blogPost.img} alt="" />
+                <p>{blogPost.content}</p> */}
+                {/* <div>
                 {   
                     // console.log('blogpost', blogPost)
                     // console.log('blogpost', blogPost.comment)
@@ -73,7 +90,7 @@ export default function BlogPost (props){
 
                 }
 
-                </div>
+                </div> */}
                 </>  
                 ) 
             }
