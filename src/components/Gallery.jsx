@@ -20,6 +20,7 @@ export default function Gallery() {
         axios.get(`${BASE_URL}/blogs`)
             .then(
                 res => {
+                    console.log('res.data is:', res.data);
                     setBlogPosts(res.data);
                     setLoading(false);
                 }
