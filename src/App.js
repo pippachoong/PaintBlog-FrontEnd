@@ -10,6 +10,8 @@ import Login from './components/Login';
 import SignUp from './components/SignUp';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import Button from 'react-bootstrap/Button';
+import { Nav, Navbar, Container } from 'react-bootstrap';
 
 // TODO: add if statement for cloud
 let BASE_URL = 'http://localhost:3000';
@@ -49,27 +51,43 @@ function App() {
       <h1> Welcome to Paint Blog! The best blog ever! </h1>
       {/* <Router> */}
       <div>
-        <nav>
-          <Link to='/'>Home</Link>
-          {
-            currentUser !== null
-              ?
-              (
-                <>
-                  <Link to='/create'>New Blog</Link>
-                  <Link onClick={handleLogout} to='/'>Logout</Link>
-                  <p>Welcome {currentUser.name}</p>
-                </>
-              )
-              :
-              (
-                <>
-                  <Link to='/login'>Login</Link>
-                  <Link to='/signup'>Sign up</Link>
-                </>
-              )
-          }
-        </nav>
+        <Navbar bg="light">
+          <Container>
+            <Nav>
+              <Nav.Link href="/">
+                Home
+              </Nav.Link>
+              <Nav.Link href="/signup">
+                Sign Up
+              </Nav.Link>
+              <Nav.Link href="/login">
+                Login
+              </Nav.Link>
+              {
+                currentUser !== null &&
+                (
+                  <Nav.Link href="/logout" onClick={handleLogout}>
+                    Log Out
+                  </Nav.Link>
+                )
+              }
+              <Nav.Link href="/create">Create</Nav.Link>
+            </Nav>
+            <Navbar.Brand>
+              Paint Blog
+            </Navbar.Brand>
+            <Navbar.Text>
+              Welcome
+              {currentUser !== null
+                ?
+
+                (" " + currentUser.name)
+                :
+                (" whatsyourface")
+              }
+            </Navbar.Text>
+          </Container>
+        </Navbar>
       </div>
 
       <Routes>
