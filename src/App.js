@@ -58,6 +58,7 @@ function App() {
                 <>
                   <Link to='/create'>New Blog</Link>
                   <Link onClick={handleLogout} to='/'>Logout</Link>
+                  <p>Welcome {currentUser.name}</p>
                 </>
               )
               :
