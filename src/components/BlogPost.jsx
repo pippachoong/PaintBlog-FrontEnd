@@ -20,6 +20,7 @@ export default function BlogPost(props) {
             .then(
                 res => {
                     setBlogPost(res.data);
+                    // console.log(res.data)
                     setLoading(false);
                 },
 
@@ -33,7 +34,7 @@ export default function BlogPost(props) {
     // console.log(`blogPost is: `, blogPost);
     // console.log('blogPost comment',blogPost.comment)
 
-    console.log('blogPost authors name', blogPost.author.name);
+    // console.log('blogPost authors name', blogPost.author.name);
 
     return (
 
@@ -46,7 +47,18 @@ export default function BlogPost(props) {
                     (
                         <>
                             <h2>{blogPost.title}</h2>
-                            <h3>{blogPost.author.name} - <em>{moment(blogPost.createdAt).format('DD MMM YY, HH:mm:ss')}</em></h3>
+                            {
+                                blogPost.author === undefined
+                                    ?
+                                    (
+                                        <h3>Hello mystery user!</h3>
+                                    )
+                                    :
+                                    (
+                                        <h3>{blogPost.author.name} - <em>{moment(blogPost.createdAt).format('DD MMM YY, HH:mm:ss')}</em></h3>
+                                    )
+                            }
+
                             <img src={blogPost.img} alt="" />
                             <p>{blogPost.content}</p>
                             {
