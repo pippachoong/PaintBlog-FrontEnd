@@ -3,6 +3,9 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import moment from 'moment';
+import Card from 'react-bootstrap/Card'
+import Stack from 'react-bootstrap/Stack'
+import ListGroup from 'react-bootstrap/ListGroup'
 
 let BASE_URL = 'http://localhost:3000';
 
@@ -46,6 +49,7 @@ export default function BlogPost(props) {
                     :
                     (
                         <>
+                            
                             <h2>{blogPost.title}</h2>
                             {
                                 blogPost.author === undefined
@@ -55,32 +59,55 @@ export default function BlogPost(props) {
                                     )
                                     :
                                     (
-                                        <h3>{blogPost.author.name} - <em>{moment(blogPost.createdAt).format('DD MMM YY, HH:mm:ss')}</em></h3>
-                                    )
-                            }
-
-                            <img src={blogPost.img} alt="" />
-                            <p>{blogPost.content}</p>
-                            {
-                                blogPost.comment === undefined
-                                    ?
-                                    (
-                                        <div>No Comments</div>
-                                    )
-                                    :
-                                    (
-                                        <div>
-                                            <h3>Comments ({blogPost.comment.length})</h3>
-                                            <ul>
+                                        <Stack gap={3}>
+                                            <Card style={{width: '18rem'}}>
+                                            <Card.Img src={blogPost.img}/>
+                                                <Card.Body>
+                                                    <Card.Title>
+                                                        {blogPost.title}    
+                                                    </Card.Title>    
+                                                    <Card.Subtitle>
+                                                        {blogPost.author.name} - <em>{moment(blogPost.createdAt).format('DD MMM YY, HH:mm:ss')}</em>
+                                                    </Card.Subtitle>
+                                                    <Card.Text>
+                                                    {blogPost.content}
+                                                    </Card.Text>
+                                                </Card.Body>
+                                            </Card>
+                                            <ListGroup>
+                                            <ListGroup>
+                                                <h3>Comments ({blogPost.comment.length})</h3>
+                                            </ListGroup>
+                                                
                                                 {
-                                                    blogPost.comment.map(comment => (
-                                                        <li>{comment.text}</li>
-                                                    ))
+                                                    blogPost.comment === undefined
+                                                        ?
+                                                        (
+                                                            <ListGroup.Item>
+                                                                No comments yet.
+                                                            </ListGroup.Item>
+                                                        )
+                                                        :
+                                                        (
+                                                            <div>
+                                                                
+                                                                <ul>
+                                                                    {
+                                                                        blogPost.comment.map(comment => (
+                                                                            <ListGroup.Item>
+                                                                                {comment.text}
+                                                                            </ListGroup.Item>
+                                                                        ))
+                                                                    }
+                                                                </ul>
+                                                            </div>
+                                                        )
                                                 }
-                                            </ul>
-                                        </div>
+                                            </ListGroup>
+                                        </Stack>
                                     )
                             }
+                            
                         </>
                     )
             }
