@@ -6,6 +6,10 @@ import moment from 'moment';
 import Card from 'react-bootstrap/Card'
 import Stack from 'react-bootstrap/Stack'
 import ListGroup from 'react-bootstrap/ListGroup'
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+import Spinner from 'react-bootstrap/Spinner'
 
 let BASE_URL = 'http://localhost:3000';
 
@@ -45,12 +49,17 @@ export default function BlogPost(props) {
             {
                 loading
                     ?
-                    (<div> Loading Blog ... </div>)
+                    (
+                        <Spinner animation="border" role="status"> 
+                            <span className="visually-hidden" >
+                                Loading Blog ... 
+                            </span >
+                        </Spinner>
+                    )
                     :
                     (
                         <>
                             
-                            <h2>{blogPost.title}</h2>
                             {
                                 blogPost.author === undefined
                                     ?
@@ -59,8 +68,9 @@ export default function BlogPost(props) {
                                     )
                                     :
                                     (
-                                        <Stack gap={3}>
-                                            <Card style={{width: '18rem'}}>
+                                        <Container>
+                                            <Row className= "justify-content-md-center">
+                                            <Card className="card" style={{width: '50%'}}>
                                             <Card.Img src={blogPost.img}/>
                                                 <Card.Body>
                                                     <Card.Title>
@@ -72,9 +82,12 @@ export default function BlogPost(props) {
                                                     <Card.Text>
                                                     {blogPost.content}
                                                     </Card.Text>
+
+                                                    
                                                 </Card.Body>
                                             </Card>
                                             <ListGroup>
+                                            
                                             <ListGroup>
                                                 <h3>Comments ({blogPost.comment.length})</h3>
                                             </ListGroup>
@@ -104,7 +117,8 @@ export default function BlogPost(props) {
                                                         )
                                                 }
                                             </ListGroup>
-                                        </Stack>
+                                            </Row>
+                                        </Container>
                                     )
                             }
                             

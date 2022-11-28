@@ -48,7 +48,10 @@ function App() {
 
   return (
     <div className="App">
-      <h1> Welcome to Paint Blog! The best blog ever! </h1>
+
+      <div className="app-header">
+        <h1> Welcome to Paint Blog! The best blog ever! </h1>
+      </div>
       {/* <Router> */}
       <div>
         <Navbar bg="light">

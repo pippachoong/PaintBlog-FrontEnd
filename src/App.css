@@ -36,3 +36,17 @@
     transform: rotate(360deg);
   }
 }
+
+.app-header{
+  border: 1px solid red;
+  height: 200px;
+  /* vertical-align: middle; */
+}
+.app-header h1{
+  margin: auto;
+  text-align: center;
+  line-height: 200px;
+
+  
+  /* margin-top: 50px; */
+}
