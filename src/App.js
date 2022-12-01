@@ -60,21 +60,30 @@ function App() {
               <Nav.Link href="/">
                 Home
               </Nav.Link>
-              <Nav.Link href="/signup">
-                Sign Up
-              </Nav.Link>
-              <Nav.Link href="/login">
-                Login
-              </Nav.Link>
               {
-                currentUser !== null &&
-                (
-                  <Nav.Link href="/logout" onClick={handleLogout}>
-                    Log Out
-                  </Nav.Link>
-                )
+                currentUser !== null
+                  ?
+                  (
+                    // TODO: add my profile link here
+                    <>
+                    <Nav.Link href="/create">Create</Nav.Link>
+                    <Nav.Link href="/" onClick={handleLogout}>
+                      Log Out
+                    </Nav.Link>
+                    </>
+                  )
+                  :
+                  (
+                    <>
+                      <Nav.Link href="/signup">
+                        Sign Up
+                      </Nav.Link>
+                      <Nav.Link href="/login">
+                        Login
+                      </Nav.Link>
+                    </>
+                  )
               }
-              <Nav.Link href="/create">Create</Nav.Link>
             </Nav>
             <Navbar.Brand>
               Paint Blog
