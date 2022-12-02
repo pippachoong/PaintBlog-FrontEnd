@@ -126,7 +126,7 @@ export default function BlogPost(props) {
                         </>
                     )
             }
-            <CreateComment />
+            <CreateComment blogId={id}/>
         </div >
     );
 }
