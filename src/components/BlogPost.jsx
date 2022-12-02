@@ -10,6 +10,7 @@ import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Spinner from 'react-bootstrap/Spinner'
+import CreateComment from './CreateComment'
 
 let BASE_URL = 'http://localhost:3000';
 
@@ -125,6 +126,7 @@ export default function BlogPost(props) {
                         </>
                     )
             }
+            <CreateComment />
         </div >
     );
 }

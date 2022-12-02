@@ -12,6 +12,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Button from 'react-bootstrap/Button';
 import { Nav, Navbar, Container } from 'react-bootstrap';
+import CreateComment from './components/CreateComment';
 
 // TODO: add if statement for cloud
 let BASE_URL = 'http://localhost:3000';
@@ -90,13 +91,15 @@ function App() {
             </Navbar.Brand>
             <Navbar.Text>
               Welcome
+              <strong>
               {currentUser !== null
                 ?
-
+                
                 (" " + currentUser.name)
                 :
                 (" whatsyourface")
               }
+              </strong>
             </Navbar.Text>
           </Container>
         </Navbar>
@@ -108,9 +111,10 @@ function App() {
         <Route path="/create" element={<CreateBlog />} />
         <Route path="/login" element={<Login fetchUser={fetchUser} user={currentUser} {...useState} />} />
         <Route path="/signup" element={<SignUp fetchUser={fetchUser} {...useState} />} />
+        <Route path="/comments" element={<CreateComment fetchUser={fetchUser} {...useState} />} />
       </Routes>
       {/* </Router> */}
-      .
+      
 
     </div>
   );
