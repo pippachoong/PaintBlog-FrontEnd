@@ -10,6 +10,7 @@ import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Spinner from 'react-bootstrap/Spinner'
+import Button from 'react-bootstrap/Button'
 import CreateComment from './CreateComment'
 
 let BASE_URL = 'http://localhost:3000';
@@ -21,6 +22,7 @@ export default function BlogPost(props) {
     const [loading, setLoading] = useState(false);
     const [blogPost, setBlogPost] = useState({});
     const [error, setError] = useState(null);
+    const [like, setLike] = useState(false);
 
     useEffect(() => {
         setLoading(true);
@@ -38,6 +40,26 @@ export default function BlogPost(props) {
                 setLoading(false);
             })
     }, [])
+
+    async function handleLike(ev){
+        ev.preventDefault()
+
+        await axios.post(`${BASE_URL}/blogs/${id}/like`, {
+            test: true, 
+        })
+        .then(
+            res => {
+
+                // setLike(true),
+            },
+        )
+        .catch(err => {
+            console.warn(`Error`, err);
+        })
+
+    }
+
+    
 
     // console.log(`blogPost is: `, blogPost);
     // console.log('blogPost comment',blogPost.comment)
@@ -83,7 +105,9 @@ export default function BlogPost(props) {
                                                     <Card.Text>
                                                     {blogPost.content}
                                                     </Card.Text>
-
+                                                    <Button variant="success" size="sm" onClick={handleLike} >
+                                                        Like
+                                                    </Button>
                                                     
                                                 </Card.Body>
                                             </Card>
