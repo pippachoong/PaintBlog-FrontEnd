@@ -109,7 +109,8 @@ export default function BlogPost(props) {
                                                                     {
                                                                         blogPost.comment.map(comment => (
                                                                             <ListGroup.Item>
-                                                                                {comment.text}
+                                                                                {comment.text} 
+                                                                                <em>- {comment.author.name}</em>
                                                                             </ListGroup.Item>
                                                                         ))
                                                                     }
