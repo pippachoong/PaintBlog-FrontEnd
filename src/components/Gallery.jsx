@@ -6,14 +6,11 @@ import { useNavigate } from "react-router-dom";
 
 let BASE_URL = 'http://localhost:3000';
 
-export default function Gallery() {
+export default function Gallery(props) {
 
     const [blogPosts, setBlogPosts] = useState([]);
     const [loading, setLoading] = useState(false);
     const navigatePush = useNavigate();
-
-    // TODO: import the data from the backend
-    // e.g. http://localhost:3000/blogs
 
     useEffect(() => {
         setLoading(true);
@@ -34,7 +31,10 @@ export default function Gallery() {
     console.log(`blogPosts is`, blogPosts);
 
     function handleShowBlog(id, e) {
-        navigatePush(`/blogs/${id}`);
+        // prevent logged out users from seeing the blog show page
+        if(props.user !== null){
+            navigatePush(`/blogs/${id}`);
+        }
     }
 
     return (

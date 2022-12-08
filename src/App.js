@@ -106,7 +106,7 @@ function App() {
       </div>
 
       <Routes>
-        <Route path="/" element={<Gallery />} />
+        <Route path="/" element={<Gallery user={currentUser} />} />
         <Route path="/blogs/:id" element={<BlogPost />} />
         <Route path="/create" element={<CreateBlog />} />
         <Route path="/login" element={<Login fetchUser={fetchUser} user={currentUser} {...useState} />} />
