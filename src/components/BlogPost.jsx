@@ -23,6 +23,7 @@ export default function BlogPost(props) {
     const [blogPost, setBlogPost] = useState({});
     const [error, setError] = useState(null);
     const [like, setLike] = useState(false);
+    const [likesCount, setLikesCount] = useState(0);
 
     useEffect(() => {
         setLoading(true);
@@ -32,6 +33,7 @@ export default function BlogPost(props) {
                     setBlogPost(res.data);
                     // console.log(res.data)
                     setLoading(false);
+                    setLikesCount(res.data.like.length);
                 },
 
             )
@@ -49,9 +51,13 @@ export default function BlogPost(props) {
         })
         .then(
             res => {
-
+            
+                console.log('test like function and reload');
+                // window.location.reload(false)
+                setLikesCount(res.data)
+                console.log(res.data);
                 // setLike(true),
-            },
+            }
         )
         .catch(err => {
             console.warn(`Error`, err);
@@ -96,7 +102,7 @@ export default function BlogPost(props) {
                                             <Card className="card" style={{width: '50%'}}>
                                             <Card.Img src={blogPost.img}/>
                                                 <Card.Body>
-                                                    {'Likes - ' + blogPost.like.length}
+                                                    {'Likes - ' + likesCount}
                                                     <Card.Title>
                                                         {blogPost.title}    
                                                     </Card.Title>    

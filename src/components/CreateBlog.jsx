@@ -47,7 +47,7 @@ export default function CreateBlog(props) {
 
     const draw = p5 => {
         p5.background(0, 0, 0)
-        p5.ellipse(100, 100, 100)
+        p5.ellipse(50, 50, 50)
         p5.fill(255, 0, 0)
         
         if(p5.keyIsDown(p5.SHIFT)){
@@ -62,7 +62,7 @@ export default function CreateBlog(props) {
                 255,
                 244
             );
-            p5.ellipse(p5.mouseX, p5.mouseY, 100,100)
+            p5.ellipse(p5.mouseX, p5.mouseY, 50,50)
         }
     }
 
