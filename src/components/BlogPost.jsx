@@ -96,6 +96,7 @@ export default function BlogPost(props) {
                                             <Card className="card" style={{width: '50%'}}>
                                             <Card.Img src={blogPost.img}/>
                                                 <Card.Body>
+                                                    {'Likes - ' + blogPost.like.length}
                                                     <Card.Title>
                                                         {blogPost.title}    
                                                     </Card.Title>    
