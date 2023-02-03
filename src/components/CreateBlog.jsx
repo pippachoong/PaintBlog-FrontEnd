@@ -1,4 +1,5 @@
 import axios from 'axios';
+import p5 from 'p5';
 import  { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Sketch from 'react-p5';
@@ -14,6 +15,9 @@ export default function CreateBlog(props) {
     const [author, setAuthor] = useState('');
     const [img, setImg] = useState('');
     const [content, setContent] = useState('');
+
+    // array to save circles
+    const [circles, setCircles] = useState([]);
 
     const navigatePush = useNavigate();
 
@@ -46,8 +50,11 @@ export default function CreateBlog(props) {
     }
 
     const draw = p5 => {
+        // background is set to black
         p5.background(0, 0, 0)
+        // brush size and shape
         p5.ellipse(100, 100, 100)
+        // fill is the paint brush
         p5.fill(255, 0, 0)
         
         if(p5.keyIsDown(p5.SHIFT)){
@@ -62,9 +69,41 @@ export default function CreateBlog(props) {
                 255,
                 244
             );
-            p5.ellipse(p5.mouseX, p5.mouseY, 100,100)
+            p5.ellipse(
+                p5.mouseX, 
+                p5.mouseY, 
+                100,100
+            )
+            // const arrayCircles = []
+            const newCircle = {
+                xPos: p5.mouseX,
+                yPos: p5.mouseY, 
+                size: 100,
+                hue: hue
+            }
+            circles.push(newCircle);
+            p5.background(0);
+            // setCircles(arrayCircles);
+            
+        }
+        
+        for (const circle of circles){
+            p5.fill( circle.hue, 255, 255 );
+            p5.ellipse(circle.xPos, circle.yPos, circle.size, circle.size)
         }
     }
+    
+
+    // const updateCircles = p5 =>{
+    //     p5.background(0);
+
+    //     for (const circle of circles){
+    //           p5.fill( circle.hue, 255, 255 );
+    //           p5.ellipse(circle.xPos, circle.yPos, circle.size, circle.size)
+    //     }
+    // };
+
+
 
     // function draw(){s
         
