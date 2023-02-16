@@ -4,6 +4,8 @@ import  { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Sketch from 'react-p5';
 
+// Base URL below
+
 
 const BASE_URL = 'http://localhost:3000';
 
