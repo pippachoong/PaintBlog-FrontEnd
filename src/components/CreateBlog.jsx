@@ -69,7 +69,7 @@ export default function CreateBlog(props) {
         // background is set to black
         p5.background(0, 0, 0)
         // brush size and shape
-        p5.ellipse(100, 100, 100)
+        // p5.ellipse(100, 100, 100)
         // fill is the paint brush // FILL DYNAMICALLY CHANGES
         p5.fill(p5.color(color));
 
@@ -101,14 +101,15 @@ export default function CreateBlog(props) {
             p5.ellipse(
                 p5.mouseX, 
                 p5.mouseY, 
-                100,100
+                100,100 // TODO: make this an input and variable for pen/brush size
             )
             // const arrayCircles = []
             const newCircle = {
                 xPos: p5.mouseX,
                 yPos: p5.mouseY, 
-                size: 100,
-                hue: hue
+                size: 100, // Pen/brush size
+                hue: hue,
+                paint: color
             }
             circles.push(newCircle);
             p5.background(0);
@@ -117,7 +118,7 @@ export default function CreateBlog(props) {
         }
         
         for (const circle of circles){
-            // p5.fill( p5.color(color));
+            p5.fill( p5.color(circle.paint));
             p5.ellipse(circle.xPos, circle.yPos, circle.size, circle.size)
         }
     }
