@@ -68,8 +68,8 @@ export default function CreateBlog(props) {
     const draw = p5 => {
         // background is set to black
         p5.background(0, 0, 0)
-        // brush size and shape
-        p5.ellipse(100, 100, 100)
+        // brush size and shape // Removes inital placement of eclipse 
+        // p5.ellipse(100, 100, 100)
         // fill is the paint brush // FILL DYNAMICALLY CHANGES
         p5.fill(p5.color(color));
 
@@ -98,16 +98,19 @@ export default function CreateBlog(props) {
             const hue = mouseXNormalised * 255
 
             p5.fill(p5.color(color));
+
+            // TODO: circle follows mouse to show the color and size of the ellipse
             p5.ellipse(
                 p5.mouseX, 
                 p5.mouseY, 
-                100,100
+                50,50 // TODO: make this an input and variable for pen/brush size
             )
             // const arrayCircles = []
+            // Add a paint factor for the circles 
             const newCircle = {
                 xPos: p5.mouseX,
                 yPos: p5.mouseY, 
-                size: 100,
+                size: 3, // TODO: need to make this adjustable also
                 hue: hue
             }
             circles.push(newCircle);
@@ -117,7 +120,7 @@ export default function CreateBlog(props) {
         }
         
         for (const circle of circles){
-            // p5.fill( p5.color(color));
+            p5.fill( p5.color(color));
             p5.ellipse(circle.xPos, circle.yPos, circle.size, circle.size)
         }
     }
