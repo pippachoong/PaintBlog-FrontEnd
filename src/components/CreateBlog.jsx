@@ -17,6 +17,7 @@ export default function CreateBlog(props) {
     const [author, setAuthor] = useState('');
     const [img, setImg] = useState('');
     const [content, setContent] = useState('');
+    const [brushSize, setBrushSize] = useState(100);
 
     // SETTING UP COLOR STATE
     const [color, setColor] = useState('red');
@@ -68,7 +69,7 @@ export default function CreateBlog(props) {
     const draw = p5 => {
         // background is set to black
         p5.background(0, 0, 0)
-        // brush size and shape // Removes inital placement of eclipse 
+        // brush size and shape
         // p5.ellipse(100, 100, 100)
         // fill is the paint brush // FILL DYNAMICALLY CHANGES
         p5.fill(p5.color(color));
@@ -103,15 +104,16 @@ export default function CreateBlog(props) {
             p5.ellipse(
                 p5.mouseX, 
                 p5.mouseY, 
-                50,50 // TODO: make this an input and variable for pen/brush size
+                100,100 // TODO: make this an input and variable for pen/brush size
             )
             // const arrayCircles = []
             // Add a paint factor for the circles 
             const newCircle = {
                 xPos: p5.mouseX,
                 yPos: p5.mouseY, 
-                size: 3, // TODO: need to make this adjustable also
-                hue: hue
+                size: brushSize, // Pen/brush size
+                hue: hue,
+                paint: color
             }
             circles.push(newCircle);
             p5.background(0);
@@ -120,7 +122,8 @@ export default function CreateBlog(props) {
         }
         
         for (const circle of circles){
-            p5.fill( p5.color(color));
+            p5.fill( p5.color(circle.paint));
+
             p5.ellipse(circle.xPos, circle.yPos, circle.size, circle.size)
         }
     }
@@ -191,6 +194,11 @@ export default function CreateBlog(props) {
                 <div>
                 <label>Color:</label>
                 <input type="color" value={color} onChange={(e) => setColor(e.target.value)} />
+                </div>
+                <div>
+                    <label for='brushSize'>Brush Size</label>
+                    <input type='range' value={brushSize} onChange={(e) => setBrushSize(e.target.value)} id='brushSize' name='brushSize' min='1' max='100'>
+                    </input>
                 </div>
                 <div>
                 <label>Color Mode:</label>
