@@ -3,6 +3,7 @@ import p5 from 'p5';
 import  { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Sketch from 'react-p5';
+import { Button } from 'bootstrap';
 
 // Base URL below
 
@@ -18,6 +19,7 @@ export default function CreateBlog(props) {
     const [img, setImg] = useState('');
     const [content, setContent] = useState('');
     const [brushSize, setBrushSize] = useState(100);
+    const [canv, setCanv] = useState({});
 
     // SETTING UP COLOR STATE
     const [color, setColor] = useState('red');
@@ -54,6 +56,8 @@ export default function CreateBlog(props) {
     const setup = (p5, canvasParentRef) => {
 
         const canvas = p5.createCanvas(500, 400).parent(canvasParentRef);
+        p5.saveCanvas('myCanvas', 'png');
+        setCanv(canvas);
         
         // let color_picker = p5.createColorPicker("green");
         const colorPicker = p5.createColorPicker(color);
@@ -186,6 +190,11 @@ export default function CreateBlog(props) {
 
     }
 
+    const downloadCanvas = (p5) => {
+        alert("downloading canvas");
+        // p5.saveCanvas('myCanvas', 'jpg');
+    }
+
     return (
 
           <div className="createBlog">
@@ -211,6 +220,8 @@ export default function CreateBlog(props) {
                 </select>
                 </div>
                 <Sketch setup={setup} draw={draw} />
+                <button id='download-button' onClick={downloadCanvas}>download Canvas</button>
+                {/* <a id='download_image' href='download_link' onClick={downloadCanvas}>Download Canvas</a> */}
             </div>
             <form className="postblogform" onSubmit={handleSubmit} >
 
