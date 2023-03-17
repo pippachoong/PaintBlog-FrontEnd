@@ -19,6 +19,9 @@ export default function CreateBlog(props) {
     const [content, setContent] = useState('');
     const [brushSize, setBrushSize] = useState(100);
 
+    // testing out a save constant
+    // const []
+
     // SETTING UP COLOR STATE
     const [color, setColor] = useState('red');
     const [colorModes, setColorModes] = useState({
@@ -64,6 +67,9 @@ export default function CreateBlog(props) {
         canvas.mousePressed((event) => {
             console.log('clicked on canvas', event)
         });
+
+        // Save canvas using online syntax
+        // p5.saveCanvas(canvas, 'myCanvas', 'jpg');
     }
 
     const draw = p5 => {
@@ -126,23 +132,14 @@ export default function CreateBlog(props) {
 
             p5.ellipse(circle.xPos, circle.yPos, circle.size, circle.size)
         }
+        if(p5.keyIsDown(p5.TAB)){
+            alert("you pressed TAB")
+            p5.saveCanvas('myCanvas', 'jpg');
+        }
     }
     
 
-    // const updateCircles = p5 =>{
-    //     p5.background(0);
-
-    //     for (const circle of circles){
-    //           p5.fill( circle.hue, 255, 255 );
-    //           p5.ellipse(circle.xPos, circle.yPos, circle.size, circle.size)
-    //     }
-    // };
-
-
-
-    // function draw(){s
-        
-    // }
+    
 
     
     const handleSubmit = (ev) => {
@@ -152,6 +149,7 @@ export default function CreateBlog(props) {
         axios.post(`${BASE_URL}/blogs`, {
             "title": title,
             "author": author,
+            //  The image post below needs to be read from the JPG saved file automatically or manually
             "img": img,
             "content": content
         })
@@ -164,6 +162,13 @@ export default function CreateBlog(props) {
             console.error(`error submitting data:`, err)
         })
         
+    }
+    const saveImageToLocal = (e) =>{
+        let link = e.currentTarget;
+        link.setAttribute('download', 'canvas.jpg');
+        let image = p5.canvasRef.current.toDataURL('image/jpg');
+        link.setAttribute('href', image);
+
     }
 
     const handleInput = (ev) => {
@@ -185,6 +190,8 @@ export default function CreateBlog(props) {
         }
 
     }
+
+    // TODO : The image we paint, needs to be saved as a file, not a name which then gets posted to the backend...  
 
     return (
 
@@ -210,6 +217,7 @@ export default function CreateBlog(props) {
                     ))}
                 </select>
                 </div>
+                        <a id='download_image' href="download_link" onClick={saveImageToLocal}> Download Image</a>
                 <Sketch setup={setup} draw={draw} />
             </div>
             <form className="postblogform" onSubmit={handleSubmit} >
@@ -236,7 +244,9 @@ export default function CreateBlog(props) {
                         />
                     </label>
                 </div>
-                <div>
+
+                {/* Image should not be an upload of an image it should be a paint */}
+                {/* <div>
                     <label>
                         Image
                         <input className="postbloginput" onChange={handleInput}
@@ -246,7 +256,7 @@ export default function CreateBlog(props) {
                         placeholder='Image URL'
                         />
                     </label>
-                </div>
+                </div> */}
                 <div>
                     <label>
                         Blog
