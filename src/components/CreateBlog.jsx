@@ -177,6 +177,13 @@ export default function CreateBlog(props) {
 
     // TODO : The image we paint, needs to be saved as a file, not a name which then gets posted to the backend...  
 
+
+    //  Step 1: Download canvas into an image -  complete
+    //  Step 2: Take file and upload to Cloudinary 
+    //  Step 3: Use URL as img Value i.e. setImg(ev.target.value)
+    //  Step 4: Get handleSumbit and Post to backend
+    
+
     return (
 
           <div className="createBlog">
