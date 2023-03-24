@@ -4,11 +4,14 @@ import p5 from 'p5';
 import  { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Sketch from 'react-p5';
+import {fill} from "@cloudinary/url-gen/actions/resize";
+import {CloudinaryImage} from '@cloudinary/url-gen';
+import { AdvancedImage } from '@cloudinary/react';
 
 // Base URL below
-
-
 const BASE_URL = 'http://localhost:3000';
+const myImage = new CloudinaryImage('bvbkk3iesl0epuwafypr', {cloudName: 'dba4baulm'}).resize(fill().width(100).height(150));
+
 
 export default function CreateBlog(props) {
     
@@ -186,6 +189,7 @@ export default function CreateBlog(props) {
 
     //  Step 3: Use URL as img Value i.e. setImg(ev.target.value)
     //  Step 4: Get handleSumbit and Post to backend
+    //  bvbkk3iesl0epuwafypr
     
 
     return (
@@ -266,7 +270,10 @@ export default function CreateBlog(props) {
                 <button >Save blog</button>
                 </div>
             </form>
-           
+
+              <div>
+                  <AdvancedImage cldImg={myImage} />
+              </div>
 
           </div>
         );
