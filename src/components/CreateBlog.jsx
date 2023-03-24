@@ -29,30 +29,12 @@ export default function CreateBlog(props) {
     HSB: p5.HSB
     });
     const [colorMode, setColorMode] = useState(p5.RGB);
+    const [downloadImage, setDownloadImage] = useState('false');
 
     // array to save circles
     const [circles, setCircles] = useState([]);
 
     const navigatePush = useNavigate();
-
-    
-    // useEffect (() => {
-    //     const handleMouseMove = (event) => {
-
-    //         setMousePos({ x: event.clientX, 
-    //                       y: event.clientY
-    //                     })
-            
-    //     }    
-
-    //     window.addEventListener('mousemove', handleMouseMove);
-    //     return () => {
-    //         window.removeEventListener(
-    //             'mousemove',
-    //             handleMouseMove
-    //         )
-    //     }
-    // }, [])
    
     const setup = (p5, canvasParentRef) => {
 
@@ -132,9 +114,10 @@ export default function CreateBlog(props) {
 
             p5.ellipse(circle.xPos, circle.yPos, circle.size, circle.size)
         }
-        if(p5.keyIsDown(p5.TAB)){
-            alert("you pressed TAB")
+       // Save image using boolean, change state onClick
+        if( downloadImage == 'true' ){
             p5.saveCanvas('myCanvas', 'jpg');
+            setDownloadImage('false');
         }
     }
     
@@ -144,6 +127,7 @@ export default function CreateBlog(props) {
     
     const handleSubmit = (ev) => {
         console.log('form submitted');
+        
         ev.preventDefault()
         
         axios.post(`${BASE_URL}/blogs`, {
@@ -217,7 +201,7 @@ export default function CreateBlog(props) {
                     ))}
                 </select>
                 </div>
-                        <a id='download_image' href="download_link" onClick={saveImageToLocal}> Download Image</a>
+                        <button onClick={() => {setDownloadImage('true')}}> Download Image</button>
                 <Sketch setup={setup} draw={draw} />
             </div>
             <form className="postblogform" onSubmit={handleSubmit} >
@@ -268,7 +252,7 @@ export default function CreateBlog(props) {
                     </label>
                 </div>
                 <div className="postblogbutton">
-                <button>Save blog</button>
+                <button >Save blog</button>
                 </div>
             </form>
            
