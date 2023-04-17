@@ -147,13 +147,15 @@ export default function CreateBlog(props) {
         })
         
     }
-    const saveImageToLocal = (e) =>{
-        let link = e.currentTarget;
-        link.setAttribute('download', 'canvas.jpg');
-        let image = p5.canvasRef.current.toDataURL('image/jpg');
-        link.setAttribute('href', image);
 
-    }
+    //  Code not used here
+    // const saveImageToLocal = (e) =>{
+    //     let link = e.currentTarget;
+    //     link.setAttribute('download', 'canvas.jpg');
+    //     let image = p5.canvasRef.current.toDataURL('image/jpg');
+    //     link.setAttribute('href', image);
+
+    // }
 
     const handleInput = (ev) => {
         switch (ev.target.name){
@@ -179,7 +181,8 @@ export default function CreateBlog(props) {
 
 
     //  Step 1: Download canvas into an image -  complete
-    //  Step 2: Take file and upload to Cloudinary 
+
+
     //  Step 3: Use URL as img Value i.e. setImg(ev.target.value)
     //  Step 4: Get handleSumbit and Post to backend
     
