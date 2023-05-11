@@ -142,7 +142,7 @@ export default function CreateBlog(props) {
             console.log('response', res)
             navigatePush('/')
         })
-        .catch(err => {
+        .catch(err => { 
             console.error(`error submitting data:`, err)
         })
         
