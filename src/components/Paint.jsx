@@ -1,0 +1,1 @@
+// TODO: this file is the future component - to paint and download images

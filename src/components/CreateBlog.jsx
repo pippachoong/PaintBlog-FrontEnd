@@ -112,6 +112,13 @@ export default function CreateBlog(props) {
             // setCircles(arrayCircles);
             
         }
+
+        // press control to undo last paint strokes
+        if(p5.keyIsDown(p5.CONTROL)){
+            console.log("control pressed")
+            console.log(`circles length is: ${circles.length}`)
+            circles.pop();
+        }
         
         for (const circle of circles){
             p5.fill( p5.color(circle.paint));
