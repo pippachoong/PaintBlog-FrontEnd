@@ -3,16 +3,14 @@ import axios from 'axios';
 import p5 from 'p5';
 import { useNavigate } from 'react-router-dom';
 import Sketch from 'react-p5';
-import cors from 'cors';
-// import app from './src/components/app';
-// import Cloudinary from 'cloudinary';
+import {fill} from "@cloudinary/url-gen/actions/resize";
+import {CloudinaryImage} from '@cloudinary/url-gen';
+import { AdvancedImage } from '@cloudinary/react';
 
-// app.use(cors({
-//     origin: 'http://localhost:3000'
-//   }));
-  
-
+// Base URL below
 const BASE_URL = 'http://localhost:3000';
+const myImage = new CloudinaryImage('bvbkk3iesl0epuwafypr', {cloudName: 'dba4baulm'}).resize(fill().width(100).height(150));
+
 
 export default function CreateBlog(props) {
   // State variables
@@ -111,25 +109,106 @@ export default function CreateBlog(props) {
       setColor(c.hex);
     });
 
-    // Event handler for mouse click on canvas
-    canvas.mousePressed((event) => {
-      console.log('clicked on canvas', event);
-    });
-  };
+    const draw = p5 => {
+        // background is set to black
+        p5.background(0, 0, 0)
+        // brush size and shape
+        // p5.ellipse(100, 100, 100)
+        // fill is the paint brush // FILL DYNAMICALLY CHANGES
+        p5.fill(p5.color(color));
 
-  // Draw function for p5 canvas
-  const draw = (p5) => {
-    // Set background to black
-    p5.background(0, 0, 0);
+        // COLOR MODE SET
+        p5.colorMode(colorMode);
+        // p5.colorMode(color_picker.color());
 
-    // Set fill color based on selected color
-    p5.fill(p5.color(color));
+        // p5.colorMode(p5.HSB, 100);
+        // for (let i = 0; i < 100; i++) {
+        // for (let j = 0; j < 100; j++) {
+        //     p5.stroke(i, j, 100);
+        //     p5.point(i, j);
+        // }
+        // }
+        
+        if(p5.keyIsDown(p5.SHIFT)){
+            p5.noStroke();
+            // noStroke();
 
-    // Set color mode for p5
-    p5.colorMode(colorMode);
+            // below function provides the rainbow of colors which need to putelse where to allow users to pick the color for there drawing
+           
+            // describe(`Rainbow gradient from left to right.
+            // Brightness increasing to white at top.`);
+            //mouse
+            const mouseXNormalised = p5.mouseX / p5.windowWidth;
+            const hue = mouseXNormalised * 255
 
-    if (p5.keyIsDown(p5.SHIFT)) {
-      p5.noStroke();
+            p5.fill(p5.color(color));
+
+            // TODO: circle follows mouse to show the color and size of the ellipse
+            p5.ellipse(
+                p5.mouseX, 
+                p5.mouseY, 
+                100,100 // TODO: make this an input and variable for pen/brush size
+            )
+            // const arrayCircles = []
+            // Add a paint factor for the circles 
+            const newCircle = {
+                xPos: p5.mouseX,
+                yPos: p5.mouseY, 
+                size: brushSize, // Pen/brush size
+                hue: hue,
+                paint: color
+            }
+            circles.push(newCircle);
+            p5.background(0);
+            // setCircles(arrayCircles);
+            
+        }
+
+        // press control to undo last paint strokes
+        if(p5.keyIsDown(p5.CONTROL)){
+            console.log("control pressed")
+            console.log(`circles length is: ${circles.length}`)
+            circles.pop();
+        }
+        
+        for (const circle of circles){
+            p5.fill( p5.color(circle.paint));
+
+            p5.ellipse(circle.xPos, circle.yPos, circle.size, circle.size)
+        }
+       // Save image using boolean, change state onClick
+        if( downloadImage == 'true' ){
+            p5.saveCanvas('myCanvas', 'jpg');
+            setDownloadImage('false');
+        }
+    }
+    
+
+    
+
+    
+    const handleSubmit = (ev) => {
+        console.log('form submitted');
+        
+        ev.preventDefault()
+        
+        axios.post(`${BASE_URL}/blogs`, {
+            "title": title,
+            "author": author,
+            //  The image post below needs to be read from the JPG saved file automatically or manually
+            "img": img,
+            "content": content
+        })
+        .then(res => {
+            console.log(`we've made it to then`)
+            console.log('response', res)
+            navigatePush('/')
+        })
+        .catch(err => { 
+            console.error(`error submitting data:`, err)
+        })
+        
+    }
 
       // Calculate normalized mouse X position
       const mouseXNormalised = p5.mouseX / p5.windowWidth;
@@ -156,113 +235,100 @@ export default function CreateBlog(props) {
       p5.background(0);
     }
 
-    // Draw circles stored in the circles array
-    for (const circle of circles) {
-      p5.fill(p5.color(circle.paint));
-      p5.ellipse(circle.xPos, circle.yPos, circle.size, circle.size);
-    }
+    // TODO : The image we paint, needs to be saved as a file, not a name which then gets posted to the backend...  
 
-    // Save canvas as image if downloadImage is true
-    if (downloadImage) {
-      p5.saveCanvas('myCanvas', 'jpg');
-      setDownloadImage(false);
-    }
-  };
 
-  // Event handler for form submission
-  const handleSubmit = (ev) => {
-    ev.preventDefault();
+    //  Step 1: Download canvas into an image -  complete
 
-    axios
-      .post(`${BASE_URL}/blogs`, {
-        title: title,
-        author: author,
-        img: img,
-        content: content
-      })
-      .then((res) => {
-        console.log('we\'ve made it to then');
-        console.log('response', res);
-        navigatePush('/');
-      })
-      .catch((err) => {
-        console.error('error submitting data:', err);
-      });
-  };
 
-  // Event handler for input changes
-  const handleInput = (ev) => {
-    switch (ev.target.name) {
-      case 'title':
-        setTitle(ev.target.value);
-        break;
-      case 'author':
-        setAuthor(ev.target.value);
-        break;
-      case 'image':
-        setImg(ev.target.value);
-        break;
-      case 'content':
-        setContent(ev.target.value);
-        break;
-      default:
-        console.log('Please try again');
-    }
-  };
+    //  Step 3: Use URL as img Value i.e. setImg(ev.target.value)
+    //  Step 4: Get handleSumbit and Post to backend
+    //  bvbkk3iesl0epuwafypr
+    
 
-  return (
-    <div className="createBlog">
-      <h2>Create a Blog!</h2>
-      <div>
-        <div>
-          <label>Color:</label>
-          <input type="color" value={color} onChange={(e) => setColor(e.target.value)} />
-        </div>
-        <div>
-          <label htmlFor="brushSize">Brush Size</label>
-          <input type="range" value={brushSize} onChange={(e) => setBrushSize(e.target.value)} id="brushSize" name="brushSize" min="1" max="100" />
-        </div>
-        <div>
-          <label>Color Mode:</label>
-          <select value={colorMode} onChange={(e) => setColorMode(colorModes[e.target.value])}>
-            {Object.keys(colorModes).map((key) => (
-              <option key={key} value={key}>
-                {key}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div type="cloudinary"> 
-        <button onClick={() => setDownloadImage(true)}>Download Image</button>
-        {/* New lines of code below */}
-        {/* <input ref={inputFileRef} accept="image/*" hidden id="image upload" type="file" onChange={handleOnChange}/> */}
-        {/* <button onClick={(e) => cloudinarySubmit(e)}>Submit</button> */}
-        </div>
-        <Sketch setup={setup} draw={draw} />
-      </div>
-      <form className="postblogform" onSubmit={handleSubmit}>
-        <div>
-          <label>
-            Title
-            <input className="postbloginput" onChange={handleInput} name="title" type="text" required placeholder="PaintBlog title" />
-          </label>
-        </div>
-        <div>
-          <label>
-            Author
-            <input className="postbloginput" onChange={handleInput} name="author" type="text" required placeholder="Author" />
-          </label>
-        </div>
-        <div>
-          <label>
-            Blog
-            <input className="postbloginput" onChange={handleInput} name="content" type="text" placeholder="Your blog goes here" />
-          </label>
-        </div>
-        <div className="postblogbutton">
-          <button>Save blog</button>
-        </div>
-      </form>
-    </div>
-  );
+    return (
+
+          <div className="createBlog">
+            <h2>Create a Blog!</h2>
+            <div>
+                <div>
+                <label>Color:</label>
+                <input type="color" value={color} onChange={(e) => setColor(e.target.value)} />
+                </div>
+                <div>
+                    <label for='brushSize'>Brush Size</label>
+                    <input type='range' value={brushSize} onChange={(e) => setBrushSize(e.target.value)} id='brushSize' name='brushSize' min='1' max='100'>
+                    </input>
+                </div>
+                <div>
+                <label>Color Mode:</label>
+                <select value={colorMode} onChange={(e) => setColorMode(colorModes[e.target.value])}>
+                    {Object.keys(colorModes).map((key) => (
+                    <option key={key} value={key}>
+                        {key}
+                    </option>
+                    ))}
+                </select>
+                </div>
+                        <button onClick={() => {setDownloadImage('true')}}> Download Image</button>
+                <Sketch setup={setup} draw={draw} />
+            </div>
+            <form className="postblogform" onSubmit={handleSubmit} >
+
+                <div>
+                    <label>
+                        Title
+                        <input className="postbloginput" onChange={handleInput}
+                        name="title"
+                        type="text"
+                        required
+                        placeholder='PaintBlog title'
+                        />
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Author
+                        <input className="postbloginput" onChange={handleInput}
+                        name="author"
+                        type="text"
+                        required
+                        placeholder='Author'
+                        />
+                    </label>
+                </div>
+
+                {/* Image should not be an upload of an image it should be a paint */}
+                {/* <div>
+                    <label>
+                        Image
+                        <input className="postbloginput" onChange={handleInput}
+                        name="image"
+                        type="text"
+                        required
+                        placeholder='Image URL'
+                        />
+                    </label>
+                </div> */}
+                <div>
+                    <label>
+                        Blog
+                        <input className="postbloginput" onChange={handleInput}
+                        name="content"
+                        type="text"
+                        placeholder='Your blog goes here'
+                        />
+                    </label>
+                </div>
+                <div className="postblogbutton">
+                <button >Save blog</button>
+                </div>
+            </form>
+
+              <div>
+                  <AdvancedImage cldImg={myImage} />
+              </div>
+
+          </div>
+        );
 }
