@@ -11,7 +11,8 @@ import {CloudinaryImage} from '@cloudinary/url-gen';
 const BASE_URL = 'http://localhost:3000';
 
 export default function CreateBlog(props) {
-    
+    const currentUser = props.user;
+    // console.log(currentUser)
     const [title, setTitle] = useState('');
     const [img, setImg] = useState('');
     const [content, setContent] = useState('');
@@ -33,7 +34,7 @@ export default function CreateBlog(props) {
         
         axios.post(`${BASE_URL}/blogs`, {
             "title": title,
-            "author": props.current_user,
+            "author": currentUser,
             "content": content,
             "img": cloudinaryImage,
         })
