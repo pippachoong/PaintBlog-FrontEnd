@@ -13,6 +13,8 @@ import axios from 'axios';
 import Button from 'react-bootstrap/Button';
 import { Nav, Navbar, Container } from 'react-bootstrap';
 import CreateComment from './components/CreateComment';
+import Paint from './components/Paint';
+// import Proxy from './src/proxy';
 
 // TODO: add if statement for cloud
 let BASE_URL = 'http://localhost:3000';
@@ -67,7 +69,8 @@ function App() {
                   (
                     // TODO: add my profile link here
                     <>
-                    <Nav.Link href="/create">Create</Nav.Link>
+                    <Nav.Link href="/paint"> Paint </Nav.Link>
+                    <Nav.Link href="/create"> Create Post </Nav.Link>
                     <Nav.Link href="/" onClick={handleLogout}>
                       Log Out
                     </Nav.Link>
@@ -81,6 +84,9 @@ function App() {
                       </Nav.Link>
                       <Nav.Link href="/login">
                         Login
+                      </Nav.Link>
+                      <Nav.Link href="/paint">
+                        Paint
                       </Nav.Link>
                     </>
                   )
@@ -108,10 +114,11 @@ function App() {
       <Routes>
         <Route path="/" element={<Gallery user={currentUser} />} />
         <Route path="/blogs/:id" element={<BlogPost />} />
-        <Route path="/create" element={<CreateBlog />} />
+        <Route path="/create" element={<CreateBlog fetchUser={fetchUser} user={currentUser} {...useState} />} />
         <Route path="/login" element={<Login fetchUser={fetchUser} user={currentUser} {...useState} />} />
         <Route path="/signup" element={<SignUp fetchUser={fetchUser} {...useState} />} />
         <Route path="/comments" element={<CreateComment fetchUser={fetchUser} {...useState} />} />
+        <Route path="/paint" element={<Paint />} />
       </Routes>
       {/* </Router> */}
       
