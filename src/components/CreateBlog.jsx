@@ -19,6 +19,12 @@ export default function CreateBlog(props) {
     const navigatePush = useNavigate();
 
 
+    // Author current undefined 
+    // Img url still not set
+            //  The image post below needs to be read from the JPG saved file automatically or manually
+            // "author": props.currentUser,
+            // Removed input to place Author instead carried across as prop currentUser
+
     
     const handleSubmit = (ev) => {
         console.log('form submitted');
@@ -27,16 +33,14 @@ export default function CreateBlog(props) {
         
         axios.post(`${BASE_URL}/blogs`, {
             "title": title,
-            // Removed input to place Author instead carried across as prop currentUser
-            "author": props.currentUser,
-            //  The image post below needs to be read from the JPG saved file automatically or manually
-            "img": img,
-            "content": content
+            "author": props.current_user,
+            "content": content,
+            "img": cloudinaryImage,
         })
         .then(res => {
             console.log(`we've made it to then`)
             console.log('response', res)
-            navigatePush('/')
+            navigatePush('/paint')
         })
         .catch(err => { 
             console.error(`error submitting data:`, err)
@@ -44,28 +48,20 @@ export default function CreateBlog(props) {
         
     }
 
-    //  Code not used here
-    // const saveImageToLocal = (e) =>{
-    //     let link = e.currentTarget;
-    //     link.setAttribute('download', 'canvas.jpg');
-    //     let image = p5.canvasRef.current.toDataURL('image/jpg');
-    //     link.setAttribute('href', image);
-
-    // }
 
     const handleInput = (ev) => {
         switch (ev.target.name){
             case 'title':
                 setTitle(ev.target.value)
+                // console.log(title);
                 break
-            // case 'author':
-            //     setAuthor(currentUser)
+            // case 'image':
+                
+            //     // console.log(img);
             //     break
-            case 'image':
-                setImg(ev.target.value)
-                break
             case 'content':
                 setContent(ev.target.value)
+                // console.log(content);
                 break
             default:
                 console.log('Please try again')
@@ -132,8 +128,8 @@ export default function CreateBlog(props) {
         
                 <div>
                     <label>
-                        Blog
-                        <input className="postbloginput" onChange={handleInput}
+                        Description
+                        <input className="postBlogContent" onChange={handleInput}
                         name="content"
                         type="text"
                         placeholder='Your blog goes here'
@@ -148,7 +144,7 @@ export default function CreateBlog(props) {
                 {cloudinaryImage && <img src={cloudinaryImage} alt="Uploaded" />}
                 </section>
                 <div className="postblogbutton">
-                <button >Save blog</button>
+                <button >Post blog</button>
                 </div>
             </form>
           </div>

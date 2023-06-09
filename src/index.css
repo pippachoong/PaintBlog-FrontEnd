@@ -19,3 +19,8 @@ code {
   align-content: center;
   flex-wrap: wrap;
 }
+
+.postBlogContent{
+  width: 400px;
+  height: 200px;
+}
