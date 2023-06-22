@@ -53,7 +53,7 @@ function App() {
     <div className="App">
 
       <div className="app-header">
-        <h1> Welcome to Paint Blog! The best blog ever! </h1>
+        <h1> Welcome to Paint Blog! </h1>
       </div>
       {/* <Router> */}
       <div>
@@ -103,7 +103,7 @@ function App() {
                 
                 (" " + currentUser.name)
                 :
-                (" whatsyourface")
+                ("Sign-up today!")
               }
               </strong>
             </Navbar.Text>

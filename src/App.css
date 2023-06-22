@@ -50,3 +50,257 @@
   
   /* margin-top: 50px; */
 }
+/* CHATGPT CSS */
+
+/* Global Styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Header Styles */
+header {
+  background-color: #333;
+  color: #fff;
+  padding: 10px;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+/* Loading Styles */
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Blog Post Styles */
+.container {
+  padding: 20px;
+}
+
+.card {
+  margin-bottom: 20px;
+}
+
+.card-title {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.card-subtitle {
+  color: #777;
+  margin-bottom: 10px;
+}
+
+.card-text {
+  margin-bottom: 20px;
+}
+
+.card img {
+  max-width: 100%;
+  height: 200px; /* Set a fixed height for consistent image sizes */
+  object-fit: cover; /* Ensure images fill the container */
+}
+
+.likes-count {
+  font-weight: bold;
+}
+
+.like-button {
+  margin-top: 10px;
+}
+
+/* Comment Styles */
+.comments-heading {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.comments-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.comments-list li {
+  margin-bottom: 10px;
+}
+
+.comment-text {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.comment-author {
+  font-style: italic;
+  color: #777;
+}
+
+/* Create Comment Styles */
+.create-comment-form {
+  margin-top: 20px;
+}
+
+.create-comment-form textarea {
+  width: 100%;
+  height: 100px;
+  resize: vertical;
+}
+
+.create-comment-form button {
+  margin-top: 10px;
+}
+
+/* Background Styles */
+body {
+  background-color: #f7f7f7;
+  /* background-image: url('path/to/your/image.jpg'); */
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+/* Mobile Styles */
+@media (max-width: 767px) {
+  header h1 {
+    font-size: 20px;
+  }
+
+  .card-title {
+    font-size: 20px;
+  }
+
+  .comments-heading {
+    font-size: 18px;
+  }
+
+  .comment-text {
+    font-size: 14px;
+  }
+}
+
+/* Three Images in a Row */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: -10px; /* Adjust margin as needed */
+}
+
+.col {
+  flex: 1 0 33.33%; /* Distribute columns evenly with equal width */
+  padding: 10px; /* Adjust padding as needed */
+}
+
+
+
+/* NEW CODE ADDED */
+
+/* Global Styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Loading Styles */
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Gallery Styles */
+#blog-posts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 20px;
+  
+}
+
+#outer-post {
+  flex-basis: calc(33.33% - 25px);
+  margin-bottom: 35px;
+}
+
+#post {
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+#post:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#blog-title {
+  margin-top: 0;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+#blog-info {
+  color: #777;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+#blog-content {
+  margin-bottom: 10px;
+}
+
+#blog-img {
+  height: 300px;  
+  width: 350px;  
+}
+
+/* Background Styles */
+body {
+  background-color: #f7f7f7;
+  /* background-image: url('path/to/your/image.jpg'); */
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+/* Mobile Styles */
+@media (max-width: 767px) {
+  #outer-post {
+    flex-basis: calc(50% - 20px);
+  }
+
+  #blog-title {
+    font-size: 18px;
+  }
+
+  #blog-info {
+    font-size: 12px;
+  }
+}

@@ -45,22 +45,22 @@ export default function Gallery(props) {
                     (<div>Loading...</div>)
                     :
                     (
-                        <div>
+                        <div id='blog-posts'>
                         {
                         blogPosts.map((blog) =>
                            
-                          <div onClick={(e) => handleShowBlog(blog._id, e)}>
-                            <div key={blog._id}>
-                                <h3>
+                          <div id='outer-post' onClick={(e) => handleShowBlog(blog._id, e)}>
+                            <div id='post' key={blog._id}>
+                                <h3 id='blog-title'>
                                     {blog.title} 
                                 </h3>
-                                <h4>
+                                <h4 id='blog-info'>
                                     {blog.author.name} - {moment(blog.createdAt).format('Do MMMM YYYY,h:mm:ss a')}
                                 </h4>
-                                <p>
+                                <p id='blog-content'>
                                     {blog.content}
                                 </p>
-                                <img src={blog.img}/>
+                                <img id='blog-img' src={blog.img}/>
                             </div>
                           </div>
                         )}
