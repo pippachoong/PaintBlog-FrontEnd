@@ -17,13 +17,17 @@ let BASE_URL = 'http://localhost:3000';
 
 export default function BlogPost(props) {
 
-    const { id } = useParams();
+    const currentUser = props.user;
+    console.log('current user', currentUser)
 
+    const { id } = useParams();
+    let array;
     const [loading, setLoading] = useState(false);
     const [blogPost, setBlogPost] = useState({});
     const [error, setError] = useState(null);
-    const [like, setLike] = useState(false);
+    const [like, setLike] = useState('Like');
     const [likesCount, setLikesCount] = useState(0);
+    
 
     useEffect(() => {
         setLoading(true);
@@ -31,10 +35,13 @@ export default function BlogPost(props) {
             .then(
                 res => {
                     setBlogPost(res.data);
-                    // console.log(res.data)
+                    console.log(res.data)
                     setLoading(false);
                     setLikesCount(res.data.like.length);
-                },
+
+                    const existsInLikeArray = likeArray.filter((id) => id.toString() === userId.toString());
+
+                }
 
             )
             .catch(err => {
@@ -51,8 +58,7 @@ export default function BlogPost(props) {
         })
         .then(
             res => {
-            
-                console.log('test like function and reload');
+
                 // window.location.reload(false)
                 setLikesCount(res.data)
                 console.log(res.data);
@@ -99,10 +105,10 @@ export default function BlogPost(props) {
                                     (
                                         <Container>
                                             <Row className= "justify-content-md-center">
-                                            <Card className="card" style={{width: '50%'}}>
-                                            <Card.Img src={blogPost.img}/>
+                                            <Card className="card" style={{width: '60%'}}>
+                                            <Card.Img id='blog-post img' src={blogPost.img}/>
                                                 <Card.Body>
-                                                    {'Likes - ' + likesCount}
+                                                    {/* {'Likes  ' + likesCount} */}
                                                     <Card.Title>
                                                         {blogPost.title}    
                                                     </Card.Title>    
@@ -112,9 +118,10 @@ export default function BlogPost(props) {
                                                     <Card.Text>
                                                     {blogPost.content}
                                                     </Card.Text>
-                                                    <Button variant="success" size="sm" onClick={handleLike} >
-                                                        Like
-                                                    </Button>
+
+                                                    <Button variant="success" size="sm" onClick={handleLike}>
+  {blogPost.like.hasOwnProperty(currentUser) ? `Unlike ${likesCount}` : `Like ${likesCount}`}
+</Button>
                                                     
                                                 </Card.Body>
                                             </Card>
@@ -138,11 +145,11 @@ export default function BlogPost(props) {
                                                                 
                                                                 <ul>
                                                                     {
-                                                                        blogPost.comment.map(comment => (
-                                                                            <ListGroup.Item>
-                                                                                {comment.text} 
-                                                                                <em>- {comment.author.name}</em>
-                                                                            </ListGroup.Item>
+                                                                                                            blogPost.comment.map(comment => (
+                                                                                                                <ListGroup.Item>
+                                                                                                                    {comment.text} 
+                                                                                                                    <em>- {comment.author.name}</em>
+                                                                                                                </ListGroup.Item>
                                                                         ))
                                                                     }
                                                                 </ul>
