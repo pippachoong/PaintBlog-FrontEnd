@@ -35,11 +35,11 @@ export default function BlogPost(props) {
             .then(
                 res => {
                     setBlogPost(res.data);
-                    console.log(res.data)
+                    console.log(blogPost)
                     setLoading(false);
-                    setLikesCount(res.data.like.length);
+                    setLikesCount(res.data.like);
 
-                    const existsInLikeArray = likeArray.filter((id) => id.toString() === userId.toString());
+                    // const existsInLikeArray = likeArray.filter((id) => id.toString() === userId.toString());
 
                 }
 
@@ -61,7 +61,8 @@ export default function BlogPost(props) {
 
                 // window.location.reload(false)
                 setLikesCount(res.data)
-                console.log(res.data);
+                console.log('object is:', res.data);
+                console.log('length is:', res.data.length);
                 // setLike(true),
             }
         )
@@ -118,11 +119,9 @@ export default function BlogPost(props) {
                                                     <Card.Text>
                                                     {blogPost.content}
                                                     </Card.Text>
-
                                                     <Button variant="success" size="sm" onClick={handleLike}>
-  {blogPost.like.hasOwnProperty(currentUser) ? `Unlike ${likesCount}` : `Like ${likesCount}`}
-</Button>
-                                                    
+                                                        {likesCount.includes(currentUser._id) ? `UnLike ${likesCount.length}` : `Like ${likesCount.length}`}
+                                                    </Button>
                                                 </Card.Body>
                                             </Card>
                                             <ListGroup>
