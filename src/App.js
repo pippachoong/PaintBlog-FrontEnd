@@ -113,7 +113,7 @@ function App() {
 
       <Routes>
         <Route path="/" element={<Gallery user={currentUser} />} />
-        <Route path="/blogs/:id" element={<BlogPost user={currentUser} />} />
+        <Route path="/blogs/:id" element={<BlogPost fetchUser={fetchUser} user={currentUser} {...useState}  />} />
         <Route path="/create" element={<CreateBlog fetchUser={fetchUser} user={currentUser} {...useState} />} />
         <Route path="/login" element={<Login fetchUser={fetchUser} user={currentUser} {...useState} />} />
         <Route path="/signup" element={<SignUp fetchUser={fetchUser} {...useState} />} />
