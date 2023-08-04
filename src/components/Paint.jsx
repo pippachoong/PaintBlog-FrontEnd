@@ -6,6 +6,21 @@ import  { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Sketch from 'react-p5';
 import { AdvancedImage } from '@cloudinary/react';
+import { CloudinaryContext, Image } from '@cloudinary/react';
+import { cloudinary } from '@cloudinary/react';
+import {
+    AdvancedImage,
+    accessibility,
+    responsive,
+    lazyload,
+    placeholder
+} from '@cloudinary/react';
+
+const cloudinaryConfig = {
+    cloudName: 'dba4baulm',
+    apiKey: '525852746297563',
+};
+
 
 
 export default function Paint(props) {
@@ -37,6 +52,7 @@ export default function Paint(props) {
    
     const setup = (p5, canvasParentRef) => {
 
+        //TODO: add an image i want to graffiti as the canvas
         const canvas = p5.createCanvas(500, 400).parent(canvasParentRef);
         
         // let color_picker = p5.createColorPicker("green");
@@ -113,8 +129,21 @@ export default function Paint(props) {
         }
        // Save image using boolean, change state onClick
         if( downloadImage == 'true' ){
-            p5.saveCanvas('myCanvas', 'jpg');
-            setDownloadImage('false');
+            const canvas = document.querySelector('canvas');
+            const imageData = canvas.toDataURL('image/jpeg', 0.8);
+
+            // Upload to Cloudinary
+            cloudinary.uploadImage(imageData, { public_id: 'my_painted_image'})
+                .then(result => {
+                    // After the image is uploaded you can get the URL and use it
+                    const imageUrl = result.url;
+                    console.log('Image URL:', imageUrl);
+                    setDownloadImage('false'); // reset the button
+                })
+                .catch(error => {
+                    console.error('Error uploading image', error);
+                    setDownloadImage('false'); // reset the button
+                })
         }
     }
         
@@ -137,7 +166,10 @@ export default function Paint(props) {
                 </div>
 
                 <button onClick={() => {setDownloadImage('true')}}> Download Image</button>
-                <Sketch setup={setup} draw={draw} />
+                <CloudinaryContext cloudName={cloudinaryConfig.cloudName} apiKey={cloudinaryConfig.apiKey}>
+                    <Sketch setup={setup} draw={draw} />
+                </CloudinaryContext>
+
             </div>
            
           </div>
