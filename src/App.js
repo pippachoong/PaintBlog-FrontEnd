@@ -4,6 +4,7 @@ import './App.css';
 import './components/Gallery';
 import Gallery from './components/Gallery';
 import { BrowserRouter as Router, Link, Route, Routes } from "react-router-dom";
+import EditPost from './components/EditPost';
 import BlogPost from './components/BlogPost';
 import CreateBlog from './components/CreateBlog';
 import Login from './components/Login';
@@ -114,6 +115,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Gallery user={currentUser} />} />
         <Route path="/blogs/:id" element={<BlogPost fetchUser={fetchUser} user={currentUser} {...useState}  />} />
+        <Route path="/blogs/:id/edit" element={<EditPost fetchUser={fetchUser} user={currentUser} {...useState}  />} />
         <Route path="/create" element={<CreateBlog fetchUser={fetchUser} user={currentUser} {...useState} />} />
         <Route path="/login" element={<Login fetchUser={fetchUser} user={currentUser} {...useState} />} />
         <Route path="/signup" element={<SignUp fetchUser={fetchUser} {...useState} />} />

@@ -1,3 +1,10 @@
+
+# TODO:
+
+1. Create  a page with your own 
+
+
+
 # PaintBlog (frontend)
 
 Want a place to post your artwork/blogs? 
@@ -21,4 +28,8 @@ TODO - add live site link
 ## Known Issues
 
 ## Wish List
-- add a paint tool to create your own artwork
+- Enable users to delete there own comments
+- Fix the Unlike and Like functionality 
+- Create a profile page with your own art work
+- Add a editing tool to be able to edit own art work - update the image, text and description, and upload into cloudinary. 
+- Complete the CSS for entire application
