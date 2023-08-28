@@ -13,10 +13,12 @@ import {CloudinaryImage} from '@cloudinary/url-gen';
 
 const BASE_URL = 'http://localhost:3000';
 
-export default function EditPost(props){
-    
+
+export default function EditPost(props) {
     const currentUser = props.user;
     const {id} = useParams();
+
+
     console.log(currentUser);
     const [blogPost, setBlogPost] = useState({});
     const [title, setTitle] = useState('');
@@ -24,39 +26,35 @@ export default function EditPost(props){
     const [content, setContent] = useState('');
     const [cloudinaryImage, setCloudinaryImage] = useState("");
     const navigatePush = useNavigate();
-
-
-    // Get Blog Post data 
+    // Fetch the blog post data when the component mounts
     useEffect(() => {
         axios.get(`${BASE_URL}/blogs/${id}`)
-            .then(
-                res => {
-                    setBlogPost(res.data);
-                }
-            )
-            .catch(err => {
-                console.warn(`Error`, err);
+            .then(res => {
+                setBlogPost(res.data);
+                setTitle(blogPost.title);
+                setContent(blogPost.content);
+                setImg(blogPost.img);
             })
-    }, [])
+            .catch(err => {
+                console.warn('Error fetching blog post:', err);
+            });
+    }, [id]);
 
-    console.log(blogPost);
-
-
-    function handleInput(ev){
-
-        switch (ev.target){
-
-            case 'title': setTitle(ev.target.title)
-            break;
-            case 'img': setImg(ev.target.file)
-            break;
-            case 'content': setContent(ev.target.content)
+    // Update title, content, and image input values
+    function handleInput(ev) {
+        const { name, value } = ev.target;
+        if (name === 'title') {
+            setTitle(value);
+        } else if (name === 'content') {
+            setContent(value);
+        } else if (name === 'img'){
+            setImg(value);
         }
+    }
 
-       
-    };
-
-    const uploadImage = async (files) => {
+    // Handle image upload and set the image URL
+    async function uploadImage(files) {
+        // ... (upload image logic, setImg)
         console.log(files[0]);
         const formData = new FormData();
         formData.append("file", files[0]);
@@ -71,104 +69,112 @@ export default function EditPost(props){
             }
           );
           const data = await response.json();
+          setImg(data.secure_url);
+          console.log('img 3 :', img);
           console.log(data);
           if (data && data.secure_url) {
             setCloudinaryImage(data.secure_url);
             setImg(data.secure_url);
-            console.log(data.secure_url);
+            // handleInput();
+            console.log('cloudinary im: ', cloudinaryImage)
+            console.log('new img 2: ', img);
           }
         } catch (error) {
           console.log(error);
         }
-      };
+    }
 
-      async function handleSubmit(ev) {
+    // Handle form submission
+    async function handleSubmit(ev) {
         ev.preventDefault();
-    
+
         try {
             const response = await axios.post(`${BASE_URL}/blogs/${blogPost._id}/edit`, {
-                updates: {
-                    title: title,
-                    content: content,
-                    img: img
-                }
+                title: title,
+                content: content,
+                img: img, // You can modify this to use the new image URL if needed
             });
-    
+
+
             if (response.data === 'ok') {
-                navigatePush(`/blogs/${blogPost._id}`);
+                // navigatePush(`/blogs/${blogPost._id}`);
+                console.log('new img 1: ', img);
             } else {
                 console.error('Error updating blog post:', response.data);
             }
         } catch (err) {
-            console.error('Error', err);
+            console.error('Error:', err);
         }
     }
 
+    return (
+        <div className="editBlog">
+            <h2>Edit Blog Post</h2>
+            <form onSubmit={handleSubmit}>
+                <div>
+                    <label>
+                        Title
+                        <input
+                            name="title"
+                            type="text"
+                            required
+                            onChange={handleInput}
+                            defaultValue={blogPost.title}
 
+                        />
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Content
+                        <textarea
+                            name="content"
+                            onChange={handleInput}
+                            defaultValue={blogPost.content}
 
-    return(
-        <div className="createBlog">
-        <h2>Edit Blog Post</h2>
-        <form className="postblogform" onSubmit={handleSubmit}>
+                        />
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Image
+                        <input
+                            name="img"
+                            type="file"
+                            onChange={(e) => 
+                                uploadImage(e.target.files)}
+                            // onChange={handleInput}
+                            defaultValue={blogPost.img}
 
-            <div>
-                <label>
-                    Title
-                    <input className="postbloginput" onChange={handleInput}
-                    name="title"
-                    type="text"
-                    required
-                    defaultValue={blogPost.title}
-                    />
-                </label>
-            </div>
+                        />
+
+                    <section className="right-side">
     
-            <div>
-                <label>
-                    Description
-                    <input className="postBlogContent" onChange={handleInput}
-                    name="content"
-                    type="text"
-                    defaultValue={blogPost.content}
-                    />
-                </label>
-            </div>
-            <div>
-                Image
+                {
+                    cloudinaryImage !== ''
+                     ?
+    
+                    (
+                        <>
+                         <img src={cloudinaryImage} alt="Uploaded" />
+                         </>
+                      
+                    )
+                    :
+                    (
+                        <>
+                         <img src={blogPost.img} alt="Orginal image" />
+                        </>
+                    )
+                }
                 
-                <input type="file" 
-                onChange={(e) => {uploadImage(e.target.files)}} 
-                defaultValue={blogPost.img}
-                ></input>
-            </div>
-            <section className="right-side">
-    
-            {
-                cloudinaryImage !== ''
-                ?
-                (
-                    <>
-                     <img src={cloudinaryImage} alt="Uploaded" />
-                     </>
-                  
-                )
-                :
-                (
-                    <>
-                     <img src={blogPost.img} alt="Orginal image" />
-                    </>
-                )
-            }
-            
-            </section>
-            <div className="postblogbutton">
-            <button> Update Blog</button>
-            </div>
-        </form>
-      </div>
-
-    )
-
-
-
+                </section>
+                    </label>
+                </div>
+                <div>
+                    <button type="submit">Update Blog</button>
+                </div>
+            </form>
+        </div>
+    );
 }
