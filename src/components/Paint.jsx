@@ -5,22 +5,49 @@ import p5 from 'p5';
 import  { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Sketch from 'react-p5';
-import { AdvancedImage } from '@cloudinary/react';
-import { CloudinaryContext, Image } from '@cloudinary/react';
-import { cloudinary } from '@cloudinary/react';
-import {
-    AdvancedImage,
-    accessibility,
-    responsive,
-    lazyload,
-    placeholder
-} from '@cloudinary/react';
 
 const cloudinaryConfig = {
-    cloudName: 'dba4baulm',
+    cloudName: 'du7c4cskj',
     apiKey: '525852746297563',
 };
 
+const cloudinaryUrl = `https://api.cloudinary.com/v1_1/du7c4cskj/image/upload`;
+const cloudinaryUploadPreset = 'cloudinary1'; // Optional
+
+function dataURLtoBlob(dataURL) {
+    const arr = dataURL.split(',');
+    const mime = arr[0].match(/:(.*?);/)[1];
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new Blob([u8arr], { type: mime });
+}
+
+const uploadToCloudinary = async (imageFile) => {
+    const formData = new FormData();
+    formData.append('file', imageFile);
+    formData.append('upload_preset', cloudinaryUploadPreset);
+
+    try {
+        const response = await fetch(cloudinaryUrl, {
+            method: 'POST',
+            body: formData,
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            const imageUrl = data.secure_url;
+            console.log('Image uploaded to Cloudinary:', imageUrl);
+        } else {
+            console.error('Error uploading image to Cloudinary:', response.statusText);
+        }
+    } catch (error) {
+        console.error('Error uploading image to Cloudinary:', error);
+    }
+};
 
 
 export default function Paint(props) {
@@ -32,9 +59,6 @@ export default function Paint(props) {
     const [img, setImg] = useState('');
     const [content, setContent] = useState('');
     const [brushSize, setBrushSize] = useState(100);
-
-    // testing out a save constant
-    // const []
 
     // SETTING UP COLOR STATE
     const [color, setColor] = useState('red');
@@ -132,18 +156,9 @@ export default function Paint(props) {
             const canvas = document.querySelector('canvas');
             const imageData = canvas.toDataURL('image/jpeg', 0.8);
 
-            // Upload to Cloudinary
-            cloudinary.uploadImage(imageData, { public_id: 'my_painted_image'})
-                .then(result => {
-                    // After the image is uploaded you can get the URL and use it
-                    const imageUrl = result.url;
-                    console.log('Image URL:', imageUrl);
-                    setDownloadImage('false'); // reset the button
-                })
-                .catch(error => {
-                    console.error('Error uploading image', error);
-                    setDownloadImage('false'); // reset the button
-                })
+            // Call the function with the image file you downloaded
+            uploadToCloudinary(dataURLtoBlob(imageData)); // Convert data URL to Blob
+            setDownloadImage('false'); // reset the button
         }
     }
         
@@ -166,10 +181,7 @@ export default function Paint(props) {
                 </div>
 
                 <button onClick={() => {setDownloadImage('true')}}> Download Image</button>
-                <CloudinaryContext cloudName={cloudinaryConfig.cloudName} apiKey={cloudinaryConfig.apiKey}>
-                    <Sketch setup={setup} draw={draw} />
-                </CloudinaryContext>
-
+                <Sketch setup={setup} draw={draw} />
             </div>
            
           </div>
