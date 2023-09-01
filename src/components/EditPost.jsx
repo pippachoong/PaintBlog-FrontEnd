@@ -16,24 +16,21 @@ const BASE_URL = 'http://localhost:3000';
 
 export default function EditPost(props) {
     const currentUser = props.user;
-    const {id} = useParams();
-
-
-    console.log(currentUser);
+    const { id } = useParams();
     const [blogPost, setBlogPost] = useState({});
     const [title, setTitle] = useState('');
     const [img, setImg] = useState('');
     const [content, setContent] = useState('');
-    const [cloudinaryImage, setCloudinaryImage] = useState("");
+    const [cloudinaryImage, setCloudinaryImage] = useState('');
     const navigatePush = useNavigate();
-    // Fetch the blog post data when the component mounts
+
     useEffect(() => {
         axios.get(`${BASE_URL}/blogs/${id}`)
             .then(res => {
                 setBlogPost(res.data);
-                setTitle(blogPost.title);
-                setContent(blogPost.content);
-                setImg(blogPost.img);
+                setTitle(res.data.title);
+                setContent(res.data.content);
+                setImg(res.data.img);
             })
             .catch(err => {
                 console.warn('Error fetching blog post:', err);
@@ -97,7 +94,7 @@ export default function EditPost(props) {
 
 
             if (response.data === 'ok') {
-                // navigatePush(`/blogs/${blogPost._id}`);
+                navigatePush(`/blogs/${blogPost._id}`);
                 console.log('new img 1: ', img);
             } else {
                 console.error('Error updating blog post:', response.data);
@@ -108,9 +105,12 @@ export default function EditPost(props) {
     }
 
     return (
-        <div className="editBlog">
-            <h2>Edit Blog Post</h2>
-            <form onSubmit={handleSubmit}>
+
+        <div>
+        {currentUser && blogPost.author && currentUser._id === blogPost.author._id ? (
+            <div className="editBlog">
+                {/* Rest of the form */}
+                <form onSubmit={handleSubmit}>
                 <div>
                     <label>
                         Title
@@ -119,8 +119,7 @@ export default function EditPost(props) {
                             type="text"
                             required
                             onChange={handleInput}
-                            defaultValue={blogPost.title}
-
+                            value={title} // Use 'value' instead of 'defaultValue'
                         />
                     </label>
                 </div>
@@ -130,8 +129,7 @@ export default function EditPost(props) {
                         <textarea
                             name="content"
                             onChange={handleInput}
-                            defaultValue={blogPost.content}
-
+                            value={content} // Use 'value' instead of 'defaultValue'
                         />
                     </label>
                 </div>
@@ -141,40 +139,26 @@ export default function EditPost(props) {
                         <input
                             name="img"
                             type="file"
-                            onChange={(e) => 
-                                uploadImage(e.target.files)}
-                            // onChange={handleInput}
-                            defaultValue={blogPost.img}
-
+                            onChange={(e) => uploadImage(e.target.files)}
                         />
-
-                    <section className="right-side">
-    
-                {
-                    cloudinaryImage !== ''
-                     ?
-    
-                    (
-                        <>
-                         <img src={cloudinaryImage} alt="Uploaded" />
-                         </>
-                      
-                    )
-                    :
-                    (
-                        <>
-                         <img src={blogPost.img} alt="Orginal image" />
-                        </>
-                    )
-                }
-                
-                </section>
+                        {/* Display the uploaded image */}
+                        {cloudinaryImage !== '' ? (
+                            <img src={cloudinaryImage} alt="Uploaded" />
+                        ) : (
+                            <img src={blogPost.img} alt="Original image" />
+                        )}
                     </label>
                 </div>
                 <div>
-                    <button type="submit">Update Blog</button>
+                    <button>Update Blog</button>
                 </div>
-            </form>
-        </div>
+                </form>
+            </div>
+        ) : (
+            <div>Access Denied, Please return to the home screen</div>
+        )}
+    </div>  
     );
 }
+
+
