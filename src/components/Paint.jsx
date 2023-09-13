@@ -1,12 +1,54 @@
 // TODO: this file is the future component - to paint and download images
+// TODO: this file is the future component - to paint and download images
 import React from 'react';
 import axios from 'axios';
 import p5 from 'p5';
 import  { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Sketch from 'react-p5';
-import { AdvancedImage } from '@cloudinary/react';
 
+const cloudinaryConfig = {
+    cloudName: 'du7c4cskj',
+    apiKey: '525852746297563',
+};
+
+const cloudinaryUrl = `https://api.cloudinary.com/v1_1/du7c4cskj/image/upload`;
+const cloudinaryUploadPreset = 'cloudinary1'; // Optional
+
+function dataURLtoBlob(dataURL) {
+    const arr = dataURL.split(',');
+    const mime = arr[0].match(/:(.*?);/)[1];
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new Blob([u8arr], { type: mime });
+}
+
+const uploadToCloudinary = async (imageFile) => {
+    const formData = new FormData();
+    formData.append('file', imageFile);
+    formData.append('upload_preset', cloudinaryUploadPreset);
+
+    try {
+        const response = await fetch(cloudinaryUrl, {
+            method: 'POST',
+            body: formData,
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            const imageUrl = data.secure_url;
+            console.log('Image uploaded to Cloudinary:', imageUrl);
+        } else {
+            console.error('Error uploading image to Cloudinary:', response.statusText);
+        }
+    } catch (error) {
+        console.error('Error uploading image to Cloudinary:', error);
+    }
+};
 
 export default function Paint(props) {
     
@@ -121,25 +163,25 @@ export default function Paint(props) {
 
     return (
 
-          <div className="createArt">
-            <h2>Paint!</h2>
-            <p> Pick a color, adjust your brush size and Press Down on SHIFT to draw. </p>
+        <div className="createArt">
+        <h2>Paint!</h2>
+        <p> Pick a color, adjust your brush size and Press Down on SHIFT to draw. </p>
 
+        <div>
             <div>
-                <div>
-                <label>Color:</label>
-                <input type="color" value={color} onChange={(e) => setColor(e.target.value)} />
-                </div>
-                <div>
-                    <label for='brushSize'>Brush Size</label>
-                    <input type='range' value={brushSize} onChange={(e) => setBrushSize(e.target.value)} id='brushSize' name='brushSize' min='1' max='100'>
-                    </input>
-                </div>
-
-                <button onClick={() => {setDownloadImage('true')}}> Download Image</button>
-                <Sketch setup={setup} draw={draw} />
+            <label>Color:</label>
+            <input type="color" value={color} onChange={(e) => setColor(e.target.value)} />
             </div>
-           
-          </div>
-        );
+            <div>
+                <label for='brushSize'>Brush Size</label>
+                <input type='range' value={brushSize} onChange={(e) => setBrushSize(e.target.value)} id='brushSize' name='brushSize' min='1' max='100'>
+                </input>
+            </div>
+
+            <button onClick={() => {setDownloadImage('true')}}> Download Image</button>
+            <Sketch setup={setup} draw={draw} />
+        </div>
+       
+      </div>
+    );
 }
