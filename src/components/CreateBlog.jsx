@@ -1,10 +1,7 @@
 import React from 'react';
 import axios from 'axios';
-import p5 from 'p5';
 import  { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {fill} from "@cloudinary/url-gen/actions/resize";
-import {CloudinaryImage} from '@cloudinary/url-gen';
 
 
 // Base URL below
@@ -141,8 +138,6 @@ export default function CreateBlog(props) {
                     <input type="file" onChange={(e) => {uploadImage(e.target.files)}}></input>
                 </div>
                 <section className="right-side">
-                <h3>The resulting image will be displayed here</h3>
-                {cloudinaryImage && <img src={cloudinaryImage} alt="Uploaded" />}
                 </section>
                 <div className="postblogbutton">
                 <button >Post blog</button>

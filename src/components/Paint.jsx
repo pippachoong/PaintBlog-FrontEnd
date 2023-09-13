@@ -60,9 +60,6 @@ export default function Paint(props) {
     const [content, setContent] = useState('');
     const [brushSize, setBrushSize] = useState(100);
 
-    // testing out a save constant
-    // const []
-
     // SETTING UP COLOR STATE
     const [color, setColor] = useState('red');
     const [colorModes, setColorModes] = useState({
@@ -79,6 +76,7 @@ export default function Paint(props) {
    
     const setup = (p5, canvasParentRef) => {
 
+        //TODO: add an image i want to graffiti as the canvas
         const canvas = p5.createCanvas(500, 400).parent(canvasParentRef);
         
         // let color_picker = p5.createColorPicker("green");
@@ -155,8 +153,12 @@ export default function Paint(props) {
         }
        // Save image using boolean, change state onClick
         if( downloadImage == 'true' ){
-            p5.saveCanvas('myCanvas', 'jpg');
-            setDownloadImage('false');
+            const canvas = document.querySelector('canvas');
+            const imageData = canvas.toDataURL('image/jpeg', 0.8);
+
+            // Call the function with the image file you downloaded
+            uploadToCloudinary(dataURLtoBlob(imageData)); // Convert data URL to Blob
+            setDownloadImage('false'); // reset the button
         }
     }
         
