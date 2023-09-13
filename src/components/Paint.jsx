@@ -5,7 +5,49 @@ import p5 from 'p5';
 import  { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Sketch from 'react-p5';
-import { AdvancedImage } from '@cloudinary/react';
+
+const cloudinaryConfig = {
+    cloudName: 'du7c4cskj',
+    apiKey: '525852746297563',
+};
+
+const cloudinaryUrl = `https://api.cloudinary.com/v1_1/du7c4cskj/image/upload`;
+const cloudinaryUploadPreset = 'cloudinary1'; // Optional
+
+function dataURLtoBlob(dataURL) {
+    const arr = dataURL.split(',');
+    const mime = arr[0].match(/:(.*?);/)[1];
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new Blob([u8arr], { type: mime });
+}
+
+const uploadToCloudinary = async (imageFile) => {
+    const formData = new FormData();
+    formData.append('file', imageFile);
+    formData.append('upload_preset', cloudinaryUploadPreset);
+
+    try {
+        const response = await fetch(cloudinaryUrl, {
+            method: 'POST',
+            body: formData,
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            const imageUrl = data.secure_url;
+            console.log('Image uploaded to Cloudinary:', imageUrl);
+        } else {
+            console.error('Error uploading image to Cloudinary:', response.statusText);
+        }
+    } catch (error) {
+        console.error('Error uploading image to Cloudinary:', error);
+    }
+};
 
 
 export default function Paint(props) {
@@ -17,9 +59,6 @@ export default function Paint(props) {
     const [img, setImg] = useState('');
     const [content, setContent] = useState('');
     const [brushSize, setBrushSize] = useState(100);
-
-    // testing out a save constant
-    // const []
 
     // SETTING UP COLOR STATE
     const [color, setColor] = useState('red');
@@ -37,6 +76,7 @@ export default function Paint(props) {
    
     const setup = (p5, canvasParentRef) => {
 
+        //TODO: add an image i want to graffiti as the canvas
         const canvas = p5.createCanvas(500, 400).parent(canvasParentRef);
         
         // let color_picker = p5.createColorPicker("green");
@@ -113,8 +153,12 @@ export default function Paint(props) {
         }
        // Save image using boolean, change state onClick
         if( downloadImage == 'true' ){
-            p5.saveCanvas('myCanvas', 'jpg');
-            setDownloadImage('false');
+            const canvas = document.querySelector('canvas');
+            const imageData = canvas.toDataURL('image/jpeg', 0.8);
+
+            // Call the function with the image file you downloaded
+            uploadToCloudinary(dataURLtoBlob(imageData)); // Convert data URL to Blob
+            setDownloadImage('false'); // reset the button
         }
     }
         
