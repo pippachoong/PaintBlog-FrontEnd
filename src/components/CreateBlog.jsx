@@ -1,7 +1,9 @@
+import Paint from './Paint';
 import React from 'react';
 import axios from 'axios';
-import  { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 
 
 // Base URL below
@@ -9,12 +11,20 @@ const BASE_URL = 'http://localhost:3000';
 
 export default function CreateBlog(props) {
     const currentUser = props.user;
-    // console.log(currentUser)
+    const imgUrl = props.imgUrl;
+    // const [imgUrl, setImgUrl] = useBetween('');
+    // console.log(imgUrl);
     const [title, setTitle] = useState('');
-    const [img, setImg] = useState('');
     const [content, setContent] = useState('');
-    const [cloudinaryImage, setCloudinaryImage] = useState("")
+    const [cloudinaryImage, setCloudinaryImage] = useState('');
     const navigatePush = useNavigate();
+    
+    
+    useEffect(() => {
+        setCloudinaryImage(imgUrl);
+      }, [imgUrl]);
+
+    console.log(cloudinaryImage);
 
 
     // Author current undefined 
@@ -22,7 +32,7 @@ export default function CreateBlog(props) {
             //  The image post below needs to be read from the JPG saved file automatically or manually
             // "author": props.currentUser,
             // Removed input to place Author instead carried across as prop currentUser
-
+    // const useEFFECT
     
     const handleSubmit = (ev) => {
         console.log('form submitted');

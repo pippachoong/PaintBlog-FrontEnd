@@ -28,6 +28,9 @@ export default function BlogPost(props) {
     const [error, setError] = useState(null);
     const [like, setLike] = useState('');
     const [likesCount, setLikesCount] = useState(0);
+    // Add a state variable to track the number of comments to display
+    const [readMoreComments, setReadMoreComments] = useState(false);
+    const [numCommentsToShow, setNumCommentsToShow] = useState(3);
     
 
     useEffect(() => {
@@ -93,6 +96,17 @@ export default function BlogPost(props) {
         }
     }
 
+    // Function to show more comments when the "Read More" link is clicked
+    const handleReadMoreComments = () => {
+    setNumCommentsToShow(blogPost.comment.length);
+    setReadMoreComments(true);
+    };
+
+    const handleReadLessComments = () => {
+        setNumCommentsToShow(3);
+        setReadMoreComments(false);
+    }
+
     return (
 
         <div>
@@ -139,17 +153,17 @@ export default function BlogPost(props) {
 
 
                                             <Row className= "justify-content-md-center">
-                                            <Card className="card" style={{width: '60%'}}>
+                                            <Card className="card-post">
 
                                         {/* need to ass link here */}
-                                            <Card.Img id='blog-post img' src={blogPost.img}/>
-                                                <Card.Body>
+                                            <Card.Img className='card-img' id='blog-post img' src={blogPost.img} />
+                                                <Card.Body className='body-post'>
                                                     {/* {'Likes  ' + likesCount} */}
                                                     <Card.Title>
                                                         {blogPost.title}    
                                                     </Card.Title>    
                                                     <Card.Subtitle>
-                                                        {blogPost.author.name} - <em>{moment(blogPost.createdAt).format('DD MMM YY, HH:mm:ss')}</em>
+                                                        {blogPost.author.name} - <em>{moment(blogPost.createdAt).format('DD MMM3YY, HH:mm:ss')}</em>
                                                     </Card.Subtitle>
                                                     <Card.Text>
                                                     {blogPost.content}
@@ -175,21 +189,55 @@ export default function BlogPost(props) {
                                                         )
                                                         :
                                                         (
-                                                            <div>
+          
+                                                           <div>
                                                                 
                                                                 <ul>
                                                                     {
-                                                                                                                                                        blogPost.comment.map(comment => (
-                                                                                                                                                                                <ListGroup.Item>
-                                                                                                                                                                                    {comment.text} 
-                                                                                                                                                                                    <em>- {comment.author.name}</em>
-                                                                                                                                                                                </ListGroup.Item>
-                                                                        ))
-                                                                    }
+                                                                                                                                                                                    blogPost.comment.slice
+                                                                                                                                                                                    (0, numCommentsToShow).map(
+                                                                                                                                                                                        (comment, index)  => {
+                                                                                                                                                                                        return (
+                                                                                                                                                                                            <ListGroup.Item>
+                                                                                                                                                                                                {comment.text}
+                                                                                                                                                                                                <em>- {comment.author.name}</em>
+                                                                                                                                                                                            </ListGroup.Item>
+                                                                                                                                                                  )})
+
+                                                                   }
                                                                 </ul>
-                                                            </div>
+                                                    {
+                                                        readMoreComments === false
+
+                                                        ?
+                                                        (
+                                                            blogPost.comment.length > 3 && (
+                                                                <div
+                                                                id="read-more-comments"
+                                                                onClick={handleReadMoreComments}
+                                                                >
+                                                                Read More Comments ({blogPost.comment.length - numCommentsToShow} more)
+                                                                </div>
+                                                            )
+                                                        )
+                                                        :
+                                                        (
+                                                            blogPost.comment.length > 3 && (
+                                                                <div
+                                                                id="read-more-comments"
+                                                                onClick={handleReadLessComments}
+                                                                >
+                                                                Read Less Comments (3 Comments)
+                                                                </div>
+                                                            )
+                                                        )
+
+                                                    }
+                                                  
+                                                 </div>
                                                         )
                                                 }
+                                                    <CreateComment blogId={id}/>
                                             </ListGroup>
                                             </Row>
                                         </Container>
@@ -199,7 +247,7 @@ export default function BlogPost(props) {
                         </>
                     )
             }
-            <CreateComment blogId={id}/>
+           
         </div >
     );
 }

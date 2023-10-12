@@ -57,11 +57,10 @@ export default function CreateComment(props) {
     }
 
     return (
-        <div>
+        <div className='comment-form'>
             <Form onSubmit={handleSubmit}>
                 <Form.Group>
                     <Form.Label>
-                        Comment
                     </Form.Label>
                     <Form.Control
                         as="textarea"

@@ -6,53 +6,70 @@ import p5 from 'p5';
 import  { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Sketch from 'react-p5';
+import CreateBlog from './CreateBlog';
+import { BrowserRouter as Router, Link, Route, Routes } from "react-router-dom";
 
-const cloudinaryConfig = {
-    cloudName: 'du7c4cskj',
-    apiKey: '525852746297563',
-};
 
-const cloudinaryUrl = `https://api.cloudinary.com/v1_1/du7c4cskj/image/upload`;
-const cloudinaryUploadPreset = 'cloudinary1'; // Optional
 
-function dataURLtoBlob(dataURL) {
-    const arr = dataURL.split(',');
-    const mime = arr[0].match(/:(.*?);/)[1];
-    const bstr = atob(arr[1]);
-    let n = bstr.length;
-    const u8arr = new Uint8Array(n);
-    while (n--) {
-        u8arr[n] = bstr.charCodeAt(n);
-    }
-    return new Blob([u8arr], { type: mime });
-}
 
-const uploadToCloudinary = async (imageFile) => {
-    const formData = new FormData();
-    formData.append('file', imageFile);
-    formData.append('upload_preset', cloudinaryUploadPreset);
+// const cloudinaryConfig = {
+//     cloudName: 'du7c4cskj',
+//     apiKey: '525852746297563',
+// };
 
-    try {
-        const response = await fetch(cloudinaryUrl, {
-            method: 'POST',
-            body: formData,
-        });
+// const cloudinaryUrl = `https://api.cloudinary.com/v1_1/du7c4cskj/image/upload`;
+// const cloudinaryUploadPreset = 'cloudinary1'; // Optional
 
-        if (response.ok) {
-            const data = await response.json();
-            const imageUrl = data.secure_url;
-            console.log('Image uploaded to Cloudinary:', imageUrl);
-        } else {
-            console.error('Error uploading image to Cloudinary:', response.statusText);
-        }
-    } catch (error) {
-        console.error('Error uploading image to Cloudinary:', error);
-    }
-};
+// function dataURLtoBlob(dataURL) {
+//     const arr = dataURL.split(',');
+//     const mime = arr[0].match(/:(.*?);/)[1];
+//     const bstr = atob(arr[1]);
+//     let n = bstr.length;
+//     const u8arr = new Uint8Array(n);
+//     while (n--) {
+//         u8arr[n] = bstr.charCodeAt(n);
+//     }
+//     return new Blob([u8arr], { type: mime });
+// }
+
+// const uploadToCloudinary = async (imageFile) => {
+//     const formData = new FormData();
+//     formData.append('file', imageFile);
+//     formData.append('upload_preset', cloudinaryUploadPreset);
+
+//     try {
+//         const response = await fetch(cloudinaryUrl, {
+//             method: 'POST',
+//             body: formData,
+//         });
+
+//         if (response.ok) {
+//             const data = await response.json();
+//             const imageUrl = data.secure_url;
+
+            
+//             console.log('Image uploaded to Cloudinary:', imageUrl);
+//             // setImgUrl(imageUrl);
+
+//             // Passing imgUrl
+//             <Paint imgUrl={imageUrl}/>
+
+//             // <CreateBlog imgUrl={imageUrl}/>
+//         } else {
+//             console.error('Error uploading image to Cloudinary:', response.statusText);
+//         }
+//     } catch (error) {
+//         console.error('Error uploading image to Cloudinary:', error);
+//     }
+// };
 
 export default function Paint(props) {
-    
-    
+
+    const [imgUrl, setImgUrl] = useState(''); // State to store the imgUrl
+    console.log(imgUrl);
+
+
+    const [imgCloudinaryUrl, setImgCloudinaryUrl] = useState({});
     const [mousePos, setMousePos] = useState({});
     const [title, setTitle] = useState('');
     const [author, setAuthor] = useState('');
@@ -68,6 +85,7 @@ export default function Paint(props) {
     });
     const [colorMode, setColorMode] = useState(p5.RGB);
     const [downloadImage, setDownloadImage] = useState('false');
+    const [createPost, setCreatePost] = useState('false');
 
     // array to save circles
     const [circles, setCircles] = useState([]);
@@ -77,7 +95,7 @@ export default function Paint(props) {
     const setup = (p5, canvasParentRef) => {
 
         //TODO: add an image i want to graffiti as the canvas
-        const canvas = p5.createCanvas(500, 400).parent(canvasParentRef);
+        const canvas = p5.createCanvas(800, 600).parent(canvasParentRef);
         
         // let color_picker = p5.createColorPicker("green");
         const colorPicker = p5.createColorPicker(color);
@@ -153,37 +171,113 @@ export default function Paint(props) {
         }
        // Save image using boolean, change state onClick
         if( downloadImage == 'true' ){
+            p5.saveCanvas('myCanvas', 'jpg');
+            setDownloadImage('false'); // reset the button
+        }
+
+        // Save image using boolean, change state onClick
+        if( createPost == 'true' ){
+            p5.saveCanvas('myCanvas', 'jpg');
             const canvas = document.querySelector('canvas');
             const imageData = canvas.toDataURL('image/jpeg', 0.8);
 
             // Call the function with the image file you downloaded
-            uploadToCloudinary(dataURLtoBlob(imageData)); // Convert data URL to Blob
-            setDownloadImage('false'); // reset the button
+            uploadToCloudinary(dataURLtoBlob(imageData)); 
+            console.log('Within Paint url', imageData);
+            // Convert data URL to Blob
+            setCreatePost('false'); // reset the button
+            // Delay the next action by 2 seconds
+            setTimeout(() => {
+            // Perform the action after the delay
+            navigatePush('/create')
+            // setMessage('Action completed after 2 seconds.');
+            }, 2000); // 2000 milliseconds = 2 seconds
+
+           
         }
     }
-        
+    
+    const cloudinaryConfig = {
+        cloudName: 'du7c4cskj',
+        apiKey: '525852746297563',
+    };
+    
+    const cloudinaryUrl = `https://api.cloudinary.com/v1_1/du7c4cskj/image/upload`;
+    const cloudinaryUploadPreset = 'cloudinary1'; // Optional
+    
+    function dataURLtoBlob(dataURL) {
+        const arr = dataURL.split(',');
+        const mime = arr[0].match(/:(.*?);/)[1];
+        const bstr = atob(arr[1]);
+        let n = bstr.length;
+        const u8arr = new Uint8Array(n);
+        while (n--) {
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+        return new Blob([u8arr], { type: mime });
+    }
+    
+    const uploadToCloudinary = async (imageFile) => {
+        const formData = new FormData();
+        formData.append('file', imageFile);
+        formData.append('upload_preset', cloudinaryUploadPreset);
+    
+        try {
+            const response = await fetch(cloudinaryUrl, {
+                method: 'POST',
+                body: formData,
+            });
+    
+            if (response.ok) {
+                const data = await response.json();
+                const imageUrl = data.secure_url;
+    
+                
+                console.log('Image uploaded to Cloudinary:', imageUrl);
+                // setImgUrl(imageUrl);
+    
+                // Set imgUrl in state
+                setImgUrl(imageUrl);
+                console.log('within paint Url', imageUrl)
+
+                // Navigate to the create page after setting imgUrl
+                navigatePush('/create');
+    
+                // <CreateBlog imgUrl={imageUrl}/>
+            } else {
+                console.error('Error uploading image to Cloudinary:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error uploading image to Cloudinary:', error);
+        }
+    };
 
     return (
 
         <div className="createArt">
-        <h2>Paint!</h2>
+        <h2 className='Paint-label'>Paint!</h2>
         <p> Pick a color, adjust your brush size and Press Down on SHIFT to draw. </p>
 
-        <div>
-            <div>
-            <label>Color:</label>
+        <div className='Paint-instruments'>
+            <div className="Paint-color">
+            <label className="Color-label">Color:</label>
             <input type="color" value={color} onChange={(e) => setColor(e.target.value)} />
             </div>
-            <div>
-                <label for='brushSize'>Brush Size</label>
-                <input type='range' value={brushSize} onChange={(e) => setBrushSize(e.target.value)} id='brushSize' name='brushSize' min='1' max='100'>
+            <div className='Brush-size'>
+                <label className='Brush-size-label' for='brushSize'>Brush Size</label>
+                <input className='brush-size-toggle' type='range' value={brushSize} onChange={(e) => setBrushSize(e.target.value)} id='brushSize' name='brushSize' min='1' max='100'>
                 </input>
             </div>
+           
+            <button className='Paint-download' onClick={() => { setDownloadImage('true') }}>Download Image</button>
+            <button className='Paint-create' onClick={() => { setCreatePost('true') }}>Create Post</button>
+            {/* {createPost && <CreateBlog imgUrl={imgUrl} />} */}
+            {/* Pass imgUrl as a prop to CreateBlog */}
 
-            <button onClick={() => {setDownloadImage('true')}}> Download Image</button>
             <Sketch setup={setup} draw={draw} />
+
         </div>
-       
       </div>
+      
     );
 }

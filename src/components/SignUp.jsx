@@ -6,12 +6,11 @@ import { useNavigate } from 'react-router-dom';
 let BASE_URL = 'http://localhost:3000';
 
 export default function SignUp(props) {
-
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [activeInput, setActiveInput] = useState(null);
     const navigatePush = useNavigate();
-
 
     function handleInput(ev) {
         switch (ev.target.name) {
@@ -24,7 +23,8 @@ export default function SignUp(props) {
             case 'password':
                 setPassword(ev.target.value)
                 break;
-            default: console.log('Sign in failed');
+            default:
+                console.log('Sign up failed');
         }
     }
 
@@ -41,42 +41,44 @@ export default function SignUp(props) {
         })
         .catch(err => {
             console.warn(err);
-        })
+        });
     }
 
-
     return (
-        <div>
-            <div>
-                <h1>
-                    Sign Up
-                </h1>
-            </div>
+        <div className="signup-container">
+            <h1>Sign Up</h1>
             <form onSubmit={handleSubmit}>
-                <input
-                    className="signup"
-                    onChange={handleInput}
-                    name="name"
-                    type="name"
-                    placeholder="Enter name"
-                />
-                <input
-                    className="signup"
-                    onChange={handleInput}
-                    name="email"
-                    type="email"
-                    placeholder="Enter email"
-                />
-                <input
-                    className="signup"
-                    onChange={handleInput}
-                    name="password"
-                    type="password"
-                    placeholder="Enter password"
-                />
-                <button>
-                    Sign Up
-                </button>
+                <div className={`input-wrapper ${activeInput === 'name' ? 'active' : ''}`}>
+                    <input
+                        onChange={handleInput}
+                        name="name"
+                        type="text"
+                        placeholder="Enter name"
+                        onFocus={() => setActiveInput('name')}
+                        onBlur={() => setActiveInput(null)}
+                    />
+                </div>
+                <div className={`input-wrapper ${activeInput === 'email' ? 'active' : ''}`}>
+                    <input
+                        onChange={handleInput}
+                        name="email"
+                        type="email"
+                        placeholder="Enter email"
+                        onFocus={() => setActiveInput('email')}
+                        onBlur={() => setActiveInput(null)}
+                    />
+                </div>
+                <div className={`input-wrapper ${activeInput === 'password' ? 'active' : ''}`}>
+                    <input
+                        onChange={handleInput}
+                        name="password"
+                        type="password"
+                        placeholder="Enter password"
+                        onFocus={() => setActiveInput('password')}
+                        onBlur={() => setActiveInput(null)}
+                    />
+                </div>
+                <button>Sign Up</button>
             </form>
         </div>
     );
