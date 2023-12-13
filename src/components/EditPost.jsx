@@ -11,8 +11,12 @@ import {useState, useEffect} from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import {CloudinaryImage} from '@cloudinary/url-gen';
 
-const BASE_URL = 'http://localhost:3000';
-
+let BASE_URL = 'http://localhost:3000';
+if( process.env.NODE_ENV === 'development'){
+    BASE_URL = 'http://localhost:3000';
+} else {
+    BASE_URL = 'https://paint-blog-backend.vercel.app/';
+} // end rails deployment if-else
 
 export default function EditPost(props) {
     const currentUser = props.user;

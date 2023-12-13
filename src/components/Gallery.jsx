@@ -5,6 +5,11 @@ import moment from 'moment';
 import { useNavigate } from "react-router-dom";
 
 let BASE_URL = 'http://localhost:3000';
+if( process.env.NODE_ENV === 'development'){
+    BASE_URL = 'http://localhost:3000';
+} else {
+    BASE_URL = 'https://paint-blog-backend.vercel.app/';
+} // end rails deployment if-else
 
 export default function Gallery(props) {
 

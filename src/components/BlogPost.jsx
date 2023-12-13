@@ -16,6 +16,11 @@ import { Nav} from 'react-bootstrap';
 // import { useNavigate, useParams } from 'react-router-dom';
 
 let BASE_URL = 'http://localhost:3000';
+if( process.env.NODE_ENV === 'development'){
+    BASE_URL = 'http://localhost:3000';
+} else {
+    BASE_URL = 'https://paint-blog-backend.vercel.app/';
+} // end rails deployment if-else
 
 export default function BlogPost(props) {
 
@@ -168,9 +173,10 @@ export default function BlogPost(props) {
                                                     <Card.Text>
                                                     {blogPost.content}
                                                     </Card.Text>
-                                                    <Button variant="success" size="sm" onClick={handleLike}>
+                                                    <button  onClick={handleLike}>
                                                         {likesCount.includes(currentUser._id) ? `UnLike ${likesCount.length}` : `Like ${likesCount.length}`}
-                                                    </Button>
+                                                    </button>
+                                                    
                                                 </Card.Body>
                                             </Card>
                                             <ListGroup>

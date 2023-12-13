@@ -755,6 +755,11 @@ button:hover {
 }
 
 
+like-btn {
+  background-color: #0056b3; /* Hover color */
+
+
+}
 /* Login CSS */
 
 /* Update App.css or create a separate CSS file for Login component */

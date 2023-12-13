@@ -11,58 +11,6 @@ import { BrowserRouter as Router, Link, Route, Routes } from "react-router-dom";
 
 
 
-
-// const cloudinaryConfig = {
-//     cloudName: 'du7c4cskj',
-//     apiKey: '525852746297563',
-// };
-
-// const cloudinaryUrl = `https://api.cloudinary.com/v1_1/du7c4cskj/image/upload`;
-// const cloudinaryUploadPreset = 'cloudinary1'; // Optional
-
-// function dataURLtoBlob(dataURL) {
-//     const arr = dataURL.split(',');
-//     const mime = arr[0].match(/:(.*?);/)[1];
-//     const bstr = atob(arr[1]);
-//     let n = bstr.length;
-//     const u8arr = new Uint8Array(n);
-//     while (n--) {
-//         u8arr[n] = bstr.charCodeAt(n);
-//     }
-//     return new Blob([u8arr], { type: mime });
-// }
-
-// const uploadToCloudinary = async (imageFile) => {
-//     const formData = new FormData();
-//     formData.append('file', imageFile);
-//     formData.append('upload_preset', cloudinaryUploadPreset);
-
-//     try {
-//         const response = await fetch(cloudinaryUrl, {
-//             method: 'POST',
-//             body: formData,
-//         });
-
-//         if (response.ok) {
-//             const data = await response.json();
-//             const imageUrl = data.secure_url;
-
-            
-//             console.log('Image uploaded to Cloudinary:', imageUrl);
-//             // setImgUrl(imageUrl);
-
-//             // Passing imgUrl
-//             <Paint imgUrl={imageUrl}/>
-
-//             // <CreateBlog imgUrl={imageUrl}/>
-//         } else {
-//             console.error('Error uploading image to Cloudinary:', response.statusText);
-//         }
-//     } catch (error) {
-//         console.error('Error uploading image to Cloudinary:', error);
-//     }
-// };
-
 export default function Paint(props) {
 
     const [imgUrl, setImgUrl] = useState(''); // State to store the imgUrl
@@ -281,3 +229,56 @@ export default function Paint(props) {
       
     );
 }
+
+
+// ---- OLD CODE BELOW --- ///
+// const cloudinaryConfig = {
+//     cloudName: 'du7c4cskj',
+//     apiKey: '525852746297563',
+// };
+
+// const cloudinaryUrl = `https://api.cloudinary.com/v1_1/du7c4cskj/image/upload`;
+// const cloudinaryUploadPreset = 'cloudinary1'; // Optional
+
+// function dataURLtoBlob(dataURL) {
+//     const arr = dataURL.split(',');
+//     const mime = arr[0].match(/:(.*?);/)[1];
+//     const bstr = atob(arr[1]);
+//     let n = bstr.length;
+//     const u8arr = new Uint8Array(n);
+//     while (n--) {
+//         u8arr[n] = bstr.charCodeAt(n);
+//     }
+//     return new Blob([u8arr], { type: mime });
+// }
+
+// const uploadToCloudinary = async (imageFile) => {
+//     const formData = new FormData();
+//     formData.append('file', imageFile);
+//     formData.append('upload_preset', cloudinaryUploadPreset);
+
+//     try {
+//         const response = await fetch(cloudinaryUrl, {
+//             method: 'POST',
+//             body: formData,
+//         });
+
+//         if (response.ok) {
+//             const data = await response.json();
+//             const imageUrl = data.secure_url;
+
+            
+//             console.log('Image uploaded to Cloudinary:', imageUrl);
+//             // setImgUrl(imageUrl);
+
+//             // Passing imgUrl
+//             <Paint imgUrl={imageUrl}/>
+
+//             // <CreateBlog imgUrl={imageUrl}/>
+//         } else {
+//             console.error('Error uploading image to Cloudinary:', response.statusText);
+//         }
+//     } catch (error) {
+//         console.error('Error uploading image to Cloudinary:', error);
+//     }
+// };
